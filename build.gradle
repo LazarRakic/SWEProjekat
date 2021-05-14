@@ -16,7 +16,11 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+<<<<<<< HEAD
         //jcenter() // Warning: this repository is going to shut down soon
+=======
+  //      jcenter() // Warning: this repository is going to shut down soon
+>>>>>>> 97ddafc1cebbe859df9330f3db3a2a1c7ded394a
     }
 }
 
