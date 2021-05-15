@@ -34,5 +34,11 @@ public class LogInActivity extends AppCompatActivity {
                 startActivity(new Intent(getBaseContext(), HomeActivity.class));
             }
         });
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(), RegistryActivity.class));
+            }
+        });
     }
 }

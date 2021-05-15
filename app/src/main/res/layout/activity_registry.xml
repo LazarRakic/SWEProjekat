@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistryActivity">
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="176dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="66dp"
+        android:ems="10"
+        android:hint="Ime"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/editTextSurname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:background="@drawable/rounded_edittext"
+        android:paddingLeft="10dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextSurname"
+        android:layout_width="176dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginTop="64dp"
+        android:ems="10"
+        android:hint="Prezime"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextName"
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:background="@drawable/rounded_edittext"
+        android:paddingLeft="10dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="376dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:hint="Datum rođenja"
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName"
+
+        android:background="@drawable/rounded_edittext"
+        android:paddingLeft="10dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="376dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDate"
+
+        android:background="@drawable/rounded_edittext"
+        android:paddingLeft="10dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_width="376dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:hint="Korisničko ime"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+
+        android:background="@drawable/rounded_edittext"
+        android:paddingLeft="10dp"
+        />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="376dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:hint="Lozinka"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUsername"
+
+        android:background="@drawable/rounded_edittext"
+        android:paddingLeft="10dp"
+        />
+
+    <Button
+        android:id="@+id/buttonRegistry"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_marginEnd="127dp"
+        android:layout_marginStart="126dp"
+        android:layout_marginTop="25dp"
+        android:text="Registrovanje"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
