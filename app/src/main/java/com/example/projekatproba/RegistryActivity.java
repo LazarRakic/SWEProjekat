@@ -21,8 +21,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -106,7 +110,7 @@ public class RegistryActivity extends AppCompatActivity {
         });
 
     }*/
-
+    Boolean flag=true; //potrebno za proveru
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +131,10 @@ public class RegistryActivity extends AppCompatActivity {
         registry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String emaiL= email.getText().toString().trim();
-                String passworD= password.getText().toString().trim();
+                String emaiL = email.getText().toString().trim();
+                String passworD = password.getText().toString().trim();
 
-                if(TextUtils.isEmpty(emaiL)){
+                if (TextUtils.isEmpty(emaiL)) {
                     email.setError("Polje za email ne sme biti prazno!");
                     return;
                 }
@@ -146,55 +150,76 @@ public class RegistryActivity extends AppCompatActivity {
                 bar.setVisibility(View.VISIBLE);
 
 
+                docRef.collection("korisnici")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        if (username.getText().toString() == document.getData().get("username")) {
+                                            flag = false;
+                                            break;
+                                        }
 
-
-
-                baseAuth.createUserWithEmailAndPassword(emaiL, passworD).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-
-                            String nameVal=name.getText().toString();
-                            String surnameVal=surname.getText().toString();
-                            String dateVal=date.getText().toString();
-                            String usernameVal=username.getText().toString();
-                            String passwordVal=password.getText().toString();
-                            String emailVal=email.getText().toString();
-
-
-                            Map<String,Object> dataToSave=new HashMap<String,Object>();
-                            dataToSave.put("name", nameVal);
-                            dataToSave.put("surname", surnameVal);
-                            dataToSave.put("date", dateVal);
-                            dataToSave.put("username", usernameVal);
-                            dataToSave.put("password", passwordVal);
-                            dataToSave.put("email", emailVal);
-
-                            Toast.makeText(RegistryActivity.this, "Nalog je kreiran.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-
-                            docRef.collection("korisnici").document(baseAuth.getCurrentUser().getUid()).set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.d("TAG", "Dokument je sačuvan! ");
-
+                                    }
+                                } else {
+                                    Log.d("TAG", "Error getting documents: ", task.getException());
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
+                            }
+                        });
 
-                                    Log.w("TAG", "Nije sačuvano u bazi! ", e);
-                                }
-                            });
+
+                if (flag == true) {
+                    baseAuth.createUserWithEmailAndPassword(emaiL, passworD).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+
+                                String nameVal = name.getText().toString();
+                                String surnameVal = surname.getText().toString();
+                                String dateVal = date.getText().toString();
+                                String usernameVal = username.getText().toString();
+                                String passwordVal = password.getText().toString();
+                                String emailVal = email.getText().toString();
+
+
+                                Map<String, Object> dataToSave = new HashMap<String, Object>();
+                                dataToSave.put("name", nameVal);
+                                dataToSave.put("surname", surnameVal);
+                                dataToSave.put("date", dateVal);
+                                dataToSave.put("username", usernameVal);
+                                dataToSave.put("password", passwordVal);
+                                dataToSave.put("email", emailVal);
+
+                                Toast.makeText(RegistryActivity.this, "Nalog je kreiran.", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+                                docRef.collection("korisnici").document(baseAuth.getCurrentUser().getUid()).set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d("TAG", "Dokument je sačuvan! ");
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                        Log.w("TAG", "Nije sačuvano u bazi! ", e);
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(RegistryActivity.this, "Greška prilikom kreiranja naloga!", Toast.LENGTH_SHORT).show();
+                                bar.setVisibility(View.GONE);
+                            }
                         }
-                        else{
-                            Toast.makeText(RegistryActivity.this, "Greška prilikom kreiranja naloga!", Toast.LENGTH_SHORT).show();
-                            bar.setVisibility(View.GONE);
-                        }
-                    }
-                });
+                    });
+                }
+                else
+                {
+                    username.setError("Korisnicko ime vec postoji!");
+                }
             }
-
         });
     }
 }
