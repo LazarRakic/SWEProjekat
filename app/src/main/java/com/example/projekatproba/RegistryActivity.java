@@ -197,6 +197,8 @@ public class RegistryActivity extends AppCompatActivity {
                                                 dataToSave.put("username", usernameVal);
                                                 dataToSave.put("password", passwordVal);
                                                 dataToSave.put("email", emailVal);
+                                                dataToSave.put("profileImageUrl" , "default");
+
 
                                                 Toast.makeText(RegistryActivity.this, "Nalog je kreiran.", Toast.LENGTH_SHORT).show();
                                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
