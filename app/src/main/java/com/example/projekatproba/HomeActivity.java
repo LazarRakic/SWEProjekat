@@ -21,6 +21,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -29,11 +31,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     FirebaseAuth baseAuth;
     private DrawerLayout drawer;
-    TextView usernameNavigation;
-    TextView emailNavigation;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
 
-
+    FirebaseUser user;
+    TextView username;
+    TextView email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        baseAuth=FirebaseAuth.getInstance();
+        user=baseAuth.getCurrentUser();
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -57,6 +61,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
+        View headerView=navigationView.getHeaderView(0);
+        username=headerView.findViewById(R.id.usrnameNav);
+        email=headerView.findViewById(R.id.emailNav);
+        String user1=user.getUid();
+        Log.d("TAG", user1+" AAAAAAAAAAAAAAAAAAAAAA");
+        DocumentReference documentReference=docRef.collection("korisnici").document(user1);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        username.setText(document.get("username").toString());
+                        email.setText(document.get("email").toString());
+                        Log.d("TAG:", "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d("TAG:", "No such document");
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
 
     }
 
