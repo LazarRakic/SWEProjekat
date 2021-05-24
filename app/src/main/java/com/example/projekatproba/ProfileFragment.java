@@ -133,7 +133,8 @@ public class ProfileFragment extends Fragment {
         ProgressDialog progressDialog=new ProgressDialog(getContext());
         progressDialog.setMessage("Uploading");
         progressDialog.show();
-        StorageReference fileref=storage.child("profile.jpg");
+        String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        StorageReference fileref=storage.child(uid+".jpg");
         StorageTask task=fileref.putFile(imageUri);
         task.continueWithTask(new Continuation() {
             @Override
