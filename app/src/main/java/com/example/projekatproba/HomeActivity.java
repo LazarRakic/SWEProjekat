@@ -7,17 +7,21 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.util.concurrent.ForwardingListeningExecutorService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -36,6 +40,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     FirebaseUser user;
     TextView username;
     TextView email;
+    ImageView image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
-
+        //Povlacenje iz baze i upisivanje u menu header
         View headerView=navigationView.getHeaderView(0);
         username=headerView.findViewById(R.id.usrnameNav);
         email=headerView.findViewById(R.id.emailNav);
@@ -75,6 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     if (document.exists()) {
                         username.setText(document.get("username").toString());
                         email.setText(document.get("email").toString());
+
                         Log.d("TAG:", "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d("TAG:", "No such document");
@@ -84,6 +90,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
+
+
+
+
+
+
 
     }
 
