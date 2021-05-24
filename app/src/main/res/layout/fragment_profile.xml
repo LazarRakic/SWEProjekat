@@ -43,24 +43,25 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
+            layout_height="match_parent"
             android:layout_width="96dp"
-            android:layout_height="96dp"
 
+            android:layout_height="96dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            layout_height="match_parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ListView
-            android:id="@+id/listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="1dp"
-            app:layout_constraintBottom_toBottomOf="@+id/eMail"
-            app:layout_constraintTop_toBottomOf="@+id/eMail"
-            tools:layout_editor_absoluteX="-58dp" />
+        <Button
+            android:id="@+id/changeProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:text="promeni sliku"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

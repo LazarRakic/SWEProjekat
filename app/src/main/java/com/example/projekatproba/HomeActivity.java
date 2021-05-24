@@ -7,20 +7,26 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.util.concurrent.ForwardingListeningExecutorService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -29,11 +35,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     FirebaseAuth baseAuth;
     private DrawerLayout drawer;
-    TextView usernameNavigation;
-    TextView emailNavigation;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
 
-
+    FirebaseUser user;
+    TextView username;
+    TextView email;
+    ImageView image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +49,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        baseAuth=FirebaseAuth.getInstance();
+        user=baseAuth.getCurrentUser();
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -56,6 +65,36 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
+        //Povlacenje iz baze i upisivanje u menu header
+        View headerView=navigationView.getHeaderView(0);
+        username=headerView.findViewById(R.id.usrnameNav);
+        email=headerView.findViewById(R.id.emailNav);
+        String user1=user.getUid();
+        Log.d("TAG", user1+" AAAAAAAAAAAAAAAAAAAAAA");
+        DocumentReference documentReference=docRef.collection("korisnici").document(user1);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        username.setText(document.get("username").toString());
+                        email.setText(document.get("email").toString());
+
+                        Log.d("TAG:", "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d("TAG:", "No such document");
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
+
+
+
+
+
 
 
     }
