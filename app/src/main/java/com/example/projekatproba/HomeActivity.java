@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -36,10 +37,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     FirebaseUser user;
     TextView username;
     TextView email;
+    ImageView srch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        srch= findViewById(R.id.search);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,6 +86,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 } else {
                     Log.d("TAG", "get failed with ", task.getException());
                 }
+            }
+        });
+
+        srch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(), SearchActivity.class));
             }
         });
 

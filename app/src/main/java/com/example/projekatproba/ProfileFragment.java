@@ -1,5 +1,6 @@
 package com.example.projekatproba;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +35,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +49,8 @@ public class ProfileFragment extends Fragment {
 
     ImageView image;
     Button changeProfile;
-
+    String imageUrl;
+    Uri imageUri;
     TextView username;
     TextView email;
     ListView listView;
@@ -79,6 +85,11 @@ public class ProfileFragment extends Fragment {
                                 {
                                     username.setText(document.get("username").toString());
                                     email.setText(document.get("email").toString());
+
+
+                                    Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
+
+
                                     Log.d("TAG", document.getId() + " => " + document.get("username"));
                                     break;
                                 }
@@ -111,7 +122,7 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1000){
             if (resultCode == Activity.RESULT_OK) {
-                Uri imageUri=data.getData();
+                imageUri=data.getData();
                 image.setImageURI(imageUri);
                 //mora se pamtiti u storage
                 upload(imageUri);
@@ -122,14 +133,42 @@ public class ProfileFragment extends Fragment {
 
     public void upload(Uri imageUri)
     {
-        StorageReference fileref=storage.child("profile.jpg");
-        fileref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        ProgressDialog progressDialog=new ProgressDialog(getContext());
+        progressDialog.setMessage("Uploading");
+        progressDialog.show();
+        String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        StorageReference fileref=storage.child(uid+".jpg");
+        StorageTask task=fileref.putFile(imageUri);
+        task.continueWithTask(new Continuation() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-               //updejtovati sliku
-                //docRef.collection("korisnici").
+            public Object then(@NonNull  Task task) throws Exception {
+                if(!task.isSuccessful())
+                    throw task.getException();
+                return fileref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull  Task<Uri> task) {
+                Uri downloaduri=task.getResult();
+                imageUrl=downloaduri.toString();
 
+                DocumentReference documentReference= docRef.collection("korisnici").document(baseAuth.getInstance().getCurrentUser().getUid());
 
+                documentReference.update(
+                        "profileImageUrl",imageUrl
+                ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful())
+                            Toast.makeText(getContext(), "Updated image", Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(getContext(), "Failed to update image", Toast.LENGTH_SHORT).show();
+                        }
+
+                        progressDialog.dismiss();
+
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
