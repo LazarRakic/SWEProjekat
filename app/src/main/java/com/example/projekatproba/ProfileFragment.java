@@ -46,11 +46,11 @@ import java.util.Map;
 public class ProfileFragment extends Fragment {
 
     //TODO :d
-    Uri imageUri;
-    ImageView image;
-    String imageUrl;
-    Button changeProfile;
 
+    ImageView image;
+    Button changeProfile;
+    String imageUrl;
+    Uri imageUri;
     TextView username;
     TextView email;
     ListView listView;
@@ -85,8 +85,11 @@ public class ProfileFragment extends Fragment {
                                 {
                                     username.setText(document.get("username").toString());
                                     email.setText(document.get("email").toString());
-                                    //image.setImageURI(Uri.parse(document.get("profileImageUrl").toString()));
+
+
                                     Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
+
+
                                     Log.d("TAG", document.getId() + " => " + document.get("username"));
                                     break;
                                 }
@@ -173,7 +176,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
     }
 
 
