@@ -40,7 +40,6 @@ public class ChangeProfileDataActivity extends AppCompatActivity {
 
     Button save;
     Button discard;
-    EditText newEmail;
     EditText newPassword;
     EditText newUsername;
     ProgressBar bar;
@@ -54,7 +53,6 @@ public class ChangeProfileDataActivity extends AppCompatActivity {
 
         save=findViewById(R.id.buttonSave);
         discard= findViewById(R.id.buttonDiscard);
-        newEmail=findViewById(R.id.editTextNewEmail);
         newPassword=findViewById(R.id.editTextNewPassword);
         newUsername= findViewById(R.id.editTextNewUsername);
         bar= findViewById(R.id.progressBar3);
@@ -65,14 +63,9 @@ public class ChangeProfileDataActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String emailN = newEmail.getText().toString().trim();
                 String passwordN = newPassword.getText().toString().trim();
                 String usernameN= newUsername.getText().toString().trim();
 
-                if (TextUtils.isEmpty(emailN)) {
-                    newEmail.setError("Polje za email ne sme biti prazno!");
-                    return;
-                }
                 if (TextUtils.isEmpty(passwordN)) {
                     newPassword.setError("Polje za lozinku mora biti popunjeno!");
                     return;
@@ -91,7 +84,6 @@ public class ChangeProfileDataActivity extends AppCompatActivity {
 
                 String userName=newUsername.getText().toString();
                 String passWord=newPassword.getText().toString();
-                String emaiL=newEmail.getText().toString();
                 CollectionReference usersRef= docRef.collection("korisnici");
                 Query query=usersRef.whereEqualTo("username",userName);
 
@@ -112,8 +104,7 @@ public class ChangeProfileDataActivity extends AppCompatActivity {
                         if(task.getResult().size()==0) {
                             documentReference.update(
                                     "username", userName,
-                                    "password", passWord,
-                                    "email", emaiL
+                                    "password", passWord
                             ).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
