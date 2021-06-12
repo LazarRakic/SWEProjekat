@@ -27,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -38,6 +39,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     TextView username;
     TextView email;
     ImageView srch;
+    ImageView image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         View headerView=navigationView.getHeaderView(0);
         username=headerView.findViewById(R.id.usrnameNav);
         email=headerView.findViewById(R.id.emailNav);
+        image= headerView.findViewById(R.id.profilePicture);
         String user1=user.getUid();
         Log.d("TAG", user1+" AAAAAAAAAAAAAAAAAAAAAA");
         DocumentReference documentReference=docRef.collection("korisnici").document(user1);
@@ -79,6 +82,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     if (document.exists()) {
                         username.setText(document.get("username").toString());
                         email.setText(document.get("email").toString());
+                        Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
                         Log.d("TAG:", "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d("TAG:", "No such document");

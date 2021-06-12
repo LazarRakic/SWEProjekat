@@ -30,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -49,6 +50,7 @@ public class ProfileFragment extends Fragment {
 
     ImageView image;
     Button changeProfile;
+    Button changeData;
     String imageUrl;
     Uri imageUri;
     TextView username;
@@ -72,6 +74,7 @@ public class ProfileFragment extends Fragment {
         email= view.findViewById(R.id.eMail);
         image=view.findViewById(R.id.profile_image);
         changeProfile=view.findViewById(R.id.changeProfile);
+        changeData= view.findViewById(R.id.changeData);
 
 
         CollectionReference usersRef= docRef.collection("korisnici");
@@ -85,8 +88,6 @@ public class ProfileFragment extends Fragment {
                                 {
                                     username.setText(document.get("username").toString());
                                     email.setText(document.get("email").toString());
-
-
                                     Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
 
 
@@ -111,6 +112,13 @@ public class ProfileFragment extends Fragment {
 
                 Intent openGallery=new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGallery,1000);
+            }
+        });
+
+        changeData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ChangeProfileDataActivity.class));
             }
         });
 
@@ -160,9 +168,9 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
-                            Toast.makeText(getContext(), "Updated image", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Slika uspešno ažurirana.", Toast.LENGTH_SHORT).show();
                         else {
-                            Toast.makeText(getContext(), "Failed to update image", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Greška prilikom ažuriranja slike.", Toast.LENGTH_SHORT).show();
                         }
 
                         progressDialog.dismiss();
