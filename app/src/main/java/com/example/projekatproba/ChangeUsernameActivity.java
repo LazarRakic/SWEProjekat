@@ -32,7 +32,7 @@ import java.util.Map;
 public class ChangeUsernameActivity extends AppCompatActivity {
     Button save;
     Button discard;
-    EditText newUsername;
+    EditText newPassword;    EditText newUsername;
     ProgressBar bar;
     FirebaseAuth baseAuth;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
@@ -43,21 +43,21 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_username);
 
         discard= findViewById(R.id.buttonDiscard);
-        save= findViewById(R.id.buttonSave);
-        newUsername= findViewById(R.id.editTextNewUsername);
+        newPassword=findViewById(R.id.editTextNewPassword);
+  		save= findViewById(R.id.buttonSave);        newUsername= findViewById(R.id.editTextNewUsername);
         baseAuth= FirebaseAuth.getInstance();
         bar= findViewById(R.id.progressBar3);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String userName=newUsername.getText().toString();
                 CollectionReference usersRef= docRef.collection("korisnici");
                 Query query=usersRef.whereEqualTo("username",userName);
                 DocumentReference documentReference= docRef.collection("korisnici").document(baseAuth.getInstance().getCurrentUser().getUid());
 
-                if (TextUtils.isEmpty(userName)) {
-                    newUsername.setError("Polje za korisničko ime ne sme biti prazno!");
+ 				if (TextUtils.isEmpty(userName)) {                    newUsername.setError("Polje za korisničko ime ne sme biti prazno!");
                     return;
                 }
 
@@ -81,8 +81,8 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                         {
                             Log.d("TAG","User not exist");
                             documentReference.update(
-                                    "username", userName
-                            ).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                    "username", userName                            ).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
