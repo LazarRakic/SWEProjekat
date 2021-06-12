@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,6 +36,7 @@ public class SearchActivity extends AppCompatActivity {
     List<String> titles;
     List<String> images;
     Adapter adapter;
+    ImageView home;
 
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
 
@@ -41,7 +45,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-
+        home= findViewById(R.id.homeImageTool);
 
 
 
@@ -187,6 +191,13 @@ public class SearchActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(), HomeActivity.class));
+            }
+        });
 
     }
 }

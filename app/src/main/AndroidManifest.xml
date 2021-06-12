@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjekatProba">
         <activity android:name=".ChangeProfileDataActivity"></activity>
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".SearchActivity" android:theme="@style/Theme.ProjekatProba.NoActionBar"/>
         <activity android:name=".RegistryActivity" />
         <activity
             android:name=".HomeActivity"
