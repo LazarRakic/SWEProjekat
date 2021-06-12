@@ -10,25 +10,26 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:id="@+id/constraintLayout"
 
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="25dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
             android:text="TextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image"
-            android:layout_marginTop="15dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
         <TextView
             android:id="@+id/eMail"
@@ -57,10 +58,25 @@
             android:id="@+id/changeProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="75dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="84dp"
             android:text="promeni sliku"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+        <Button
+            android:id="@+id/changeData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="84dp"
+            android:layout_marginEnd="20dp"
+            android:text="promeni podatke"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/changeProfile"
             app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
