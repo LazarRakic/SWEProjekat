@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
+
+
     RecyclerView dataList;
     List<String> titles;
     List<String> images;
@@ -38,6 +40,11 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+
+
+
+
 
         dataList= findViewById(R.id.dataList);
 
