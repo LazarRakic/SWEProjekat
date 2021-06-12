@@ -19,7 +19,22 @@
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/reply_icon"
-            android:title="Podešavanja" />
+            android:title="Podešavanja" >
+            <menu>
+                <item
+                    android:id="@+id/nav_settings_username"
+                    android:icon="@drawable/reply_icon"
+                    android:title="Korisničko ime" />
+                <item
+                    android:id="@+id/nav_settings_password"
+                    android:icon="@drawable/reply_icon"
+                    android:title="Lozinka" />
+                <item
+                    android:id="@+id/nav_settings_delete_account"
+                    android:icon="@drawable/reply_icon"
+                    android:title="Brisanje naloga" />
+            </menu>
+        </item>
     </group>
     <item android:title="Odjaviti se" >
         <menu>

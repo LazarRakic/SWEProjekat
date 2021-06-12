@@ -44,6 +44,7 @@ public class LogInActivity extends AppCompatActivity {
         login=findViewById(R.id.login);
         bar= findViewById(R.id.progressBar2);
         baseAuth= FirebaseAuth.getInstance();
+        
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

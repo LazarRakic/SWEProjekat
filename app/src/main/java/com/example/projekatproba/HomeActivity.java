@@ -11,22 +11,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -123,8 +118,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_notifications:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
                 break;
-            case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+            case R.id.nav_settings_username:
+                startActivity(new Intent(getApplicationContext(), ChangeUsernameActivity.class));
+                break;
+            case R.id.nav_settings_password:
+                startActivity(new Intent(getApplicationContext(), ChangePasswordActivity.class));
+                break;
+            case R.id.nav_settings_delete_account:
+                startActivity(new Intent(getApplicationContext(), DeleteAccountActivity.class));
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
