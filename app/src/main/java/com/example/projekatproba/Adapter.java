@@ -5,7 +5,10 @@
 package com.example.projekatproba;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,11 +30,21 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     List<String> titles;
     List<String> images;
     LayoutInflater inflater;
+    List<String> nizSelektovanih;
+    TextView textView;
 
-    public Adapter(Context ctx, List<String> titles, List<String> images){
+    public Adapter(Context ctx, List<String> titles, List<String> images ){
         this.titles=titles;
         this.images=images;
         this.inflater= LayoutInflater.from(ctx);
+        this.nizSelektovanih=new ArrayList<>();
+
+    }
+    public void copyConstructor(Adapter adapter){
+        this.titles=adapter.titles;
+        this.images=adapter.images;
+        this.inflater= adapter.inflater;
+        this.nizSelektovanih=adapter.nizSelektovanih;
     }
 
 
@@ -49,6 +65,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         //holder.gridIcon.setImageResource(images.get(position));
 
 
+
     }
 
     @Override
@@ -56,7 +73,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return titles.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ImageView gridIcon;
 
@@ -64,6 +81,60 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             super(itemView);
             title= itemView.findViewById(R.id.textView2);
             gridIcon= itemView.findViewById(R.id.imageView2);
+
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    //Intent intent = new Intent(itemView.getContext(), ModifyPers.class);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //Log.v("nom",nom);
+
+                   // itemView.getContext().startActivity(intent);
+                    Pattern p=Pattern.compile(title.getText().toString());
+                    String s="";
+                    for(String pom : nizSelektovanih){
+                        s+=pom;
+                    }
+                    Matcher m=p.matcher(s);
+                    if(!m.find()) {
+                        nizSelektovanih.add(title.getText().toString());
+                        view.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#008000"));
+                        Log.d("TITLE SASTOJKA", title.getText().toString());
+                        Log.d("NIZ SELEKTOVANIH", nizSelektovanih.toString());
+                    }
+                    else{
+                        for(int i=0;i<nizSelektovanih.size();i++ ){
+                            if( nizSelektovanih.get(i).equals(title.getText().toString())){
+                                nizSelektovanih.remove(i);
+                                view.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
+                                break;
+                            }
+                        }
+                        Log.d("NIZ SELEKTOVANIH", nizSelektovanih.toString());
+                    }
+
+                    /*String uljez = title.getText().toString();
+                    boolean istinitost = false;
+                    int x=0;
+                    for(int i=0;i<nizSelektovanih.size();i++ ){
+                        if(nizSelektovanih.get(i).equals(uljez))
+                        {   x=i;
+                            istinitost=true;
+                            break;
+                        }
+                    }
+                    if(!istinitost){
+                        nizSelektovanih.add(title.getText().toString());
+                        view.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#008000"));
+                    }
+                    else{
+                        nizSelektovanih.remove(x);
+                        view.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
+                    }*/
+
+                }
+            });
         }
     }
+
 }

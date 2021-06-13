@@ -29,23 +29,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_baseline_home_24" />
-
-        <ImageView
-            android:id="@+id/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/add_icon"></ImageView>
-
         <TextView
+            android:id="@+id/pretraziPoSastojcima"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="188dp"
-            android:text="Dodajte novi sastojak"
-            android:textSize="16sp"
-            tools:layout_editor_absoluteX="226dp"
-            tools:layout_editor_absoluteY="18dp" />
+            android:text="Pretrazi"
+            android:layout_marginLeft="320dp"
+            android:textSize="18sp"
+            />
+
 
 
     </androidx.appcompat.widget.Toolbar>

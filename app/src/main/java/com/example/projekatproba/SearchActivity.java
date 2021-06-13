@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,12 +32,13 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
-
+    List<String> selektovaniSastojci;
     RecyclerView dataList;
     List<String> titles;
     List<String> images;
     Adapter adapter;
     ImageView home;
+    TextView pretrazi;
 
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
 
@@ -46,7 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         home= findViewById(R.id.homeImageTool);
-
+        pretrazi = findViewById(R.id.pretraziPoSastojcima);
 
 
 
@@ -54,10 +56,155 @@ public class SearchActivity extends AppCompatActivity {
 
         titles= new ArrayList<>();
         images= new ArrayList<>();
+        this.selektovaniSastojci=new ArrayList<String>();
 
 
         Context sada = this;
-        docRef.collection("meso")
+
+           /* docRef.collection("meso")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                                    titles.add(document.get("naziv").toString());
+                                    images.add(document.get("sImgUrl").toString());
+
+
+                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
+                                }
+
+                                Log.d("TAG", titles.toString() + " => " + images.toString());
+                                adapter = new Adapter(sada, titles, images);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
+                                dataList.setLayoutManager(gridLayoutManager);
+                                dataList.setAdapter(adapter);
+                            } else {
+                                Log.d("TAG", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+            docRef.collection("povrce")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                                    titles.add(document.get("naziv").toString());
+                                    images.add(document.get("sImgUrl").toString());
+
+
+                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
+                                }
+
+                                Log.d("TAG", titles.toString() + " => " + images.toString());
+                                adapter = new Adapter(sada, titles, images);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
+                                dataList.setLayoutManager(gridLayoutManager);
+                                dataList.setAdapter(adapter);
+                            } else {
+                                Log.d("TAG", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+            docRef.collection("ostalo")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                                    titles.add(document.get("naziv").toString());
+                                    images.add(document.get("sImgUrl").toString());
+
+
+                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
+                                }
+
+                                Log.d("TAG", titles.toString() + " => " + images.toString());
+                                adapter = new Adapter(sada, titles, images);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
+                                dataList.setLayoutManager(gridLayoutManager);
+                                dataList.setAdapter(adapter);
+                            } else {
+                                Log.d("TAG", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+            docRef.collection("zacini")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                                    titles.add(document.get("naziv").toString());
+                                    images.add(document.get("sImgUrl").toString());
+
+
+                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
+                                }
+
+                                Log.d("TAG", titles.toString() + " => " + images.toString());
+                                adapter = new Adapter(sada, titles, images);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
+                                dataList.setLayoutManager(gridLayoutManager);
+                                dataList.setAdapter(adapter);
+                            } else {
+                                Log.d("TAG", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+            docRef.collection("voce")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                                    titles.add(document.get("naziv").toString());
+                                    images.add(document.get("sImgUrl").toString());
+
+
+                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
+                                }
+
+                                Log.d("TAG", titles.toString() + " => " + images.toString());
+                                adapter = new Adapter(sada, titles, images);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
+                                dataList.setLayoutManager(gridLayoutManager);
+                                dataList.setAdapter(adapter);
+                            } else {
+                                Log.d("TAG", "Error getting documents: ", task.getException());
+                            }
+
+                        }
+                    });*/
+
+
+
+
+         //sel ektovaniSastojci.addAll(adapter.nizSelektovanih);
+
+
+
+        docRef.collection("sastojci")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -73,131 +220,36 @@ public class SearchActivity extends AppCompatActivity {
                                 Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
                             }
 
-                            Log.d("TAG",titles.toString()+" => "+ images.toString());
-                            adapter= new Adapter(sada, titles, images);
-                            GridLayoutManager gridLayoutManager=new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
+                            Log.d("TAG", titles.toString() + " => " + images.toString());
+                            adapter = new Adapter(sada, titles, images);
+                            GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
                             dataList.setLayoutManager(gridLayoutManager);
                             dataList.setAdapter(adapter);
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
+
                     }
                 });
 
-        docRef.collection("povrce")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                titles.add(document.get("naziv").toString());
-                                images.add(document.get("sImgUrl").toString());
-
-
-                                Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
-                            }
-
-                            Log.d("TAG",titles.toString()+" => "+ images.toString());
-                            adapter= new Adapter(sada, titles, images);
-                            GridLayoutManager gridLayoutManager=new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
-                            dataList.setLayoutManager(gridLayoutManager);
-                            dataList.setAdapter(adapter);
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-        docRef.collection("ostalo")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                titles.add(document.get("naziv").toString());
-                                images.add(document.get("sImgUrl").toString());
-
-
-                                Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
-                            }
-
-                            Log.d("TAG",titles.toString()+" => "+ images.toString());
-                            adapter= new Adapter(sada, titles, images);
-                            GridLayoutManager gridLayoutManager=new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
-                            dataList.setLayoutManager(gridLayoutManager);
-                            dataList.setAdapter(adapter);
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-        docRef.collection("zacini")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                titles.add(document.get("naziv").toString());
-                                images.add(document.get("sImgUrl").toString());
-
-
-                                Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
-                            }
-
-                            Log.d("TAG",titles.toString()+" => "+ images.toString());
-                            adapter= new Adapter(sada, titles, images);
-                            GridLayoutManager gridLayoutManager=new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
-                            dataList.setLayoutManager(gridLayoutManager);
-                            dataList.setAdapter(adapter);
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-        docRef.collection("voce")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                titles.add(document.get("naziv").toString());
-                                images.add(document.get("sImgUrl").toString());
-
-
-                                Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
-                            }
-
-                            Log.d("TAG",titles.toString()+" => "+ images.toString());
-                            adapter= new Adapter(sada, titles, images);
-                            GridLayoutManager gridLayoutManager=new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
-                            dataList.setLayoutManager(gridLayoutManager);
-                            dataList.setAdapter(adapter);
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getBaseContext(), HomeActivity.class));
+                selektovaniSastojci.addAll(adapter.nizSelektovanih);
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                Log.d("NIZARA NIZARA ALE ALE",selektovaniSastojci.toString());
+            }
+        });
+
+        pretrazi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selektovaniSastojci=adapter.nizSelektovanih;
+                Log.d("NIZARA NIZARA ALE ALE",selektovaniSastojci.toString());
             }
         });
 
     }
+
 }
