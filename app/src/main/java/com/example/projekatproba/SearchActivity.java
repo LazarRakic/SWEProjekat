@@ -204,7 +204,7 @@ public class SearchActivity extends AppCompatActivity {
          //sel ektovaniSastojci.addAll(adapter.nizSelektovanih);
 
 
-        /*PROBA PROBA PROBA
+        //PROBA PROBA PROBA
         docRef.collection("sastojci")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -231,9 +231,9 @@ public class SearchActivity extends AppCompatActivity {
                         }
 
                     }
-                });*/
+                });
 
-        adapter=ingredientsUtility.getIngredients(dataList,"sastojci",docRef,sada,titles,images);
+
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override

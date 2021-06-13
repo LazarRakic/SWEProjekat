@@ -11,11 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjekatProba">
-		        <activity android:name=".ChangeProfileDataActivity"></activity>
-        <activity android:name=".ChangePasswordActivity"></activity>
+        <activity android:name=".DodavanjeRecepata"></activity>
+        <activity android:name=".ChangeProfileDataActivity" />
+        <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".DeleteAccountActivity" />
         <activity android:name=".ChangeUsernameActivity" />
-        <activity android:name=".SearchActivity" android:theme="@style/Theme.ProjekatProba.NoActionBar"/>
+        <activity
+            android:name=".SearchActivity"
+            android:theme="@style/Theme.ProjekatProba.NoActionBar" />
         <activity android:name=".RegistryActivity" />
         <activity
             android:name=".HomeActivity"
