@@ -38,8 +38,7 @@ public class SearchActivity extends AppCompatActivity {
     List<String> images;
     Adapter adapter;
     ImageView home;
-    TextView pretrazi;
-
+ TextView pretrazi;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
 
     @Override
@@ -197,15 +196,7 @@ public class SearchActivity extends AppCompatActivity {
                         }
                     });*/
 
-
-
-
-         //sel ektovaniSastojci.addAll(adapter.nizSelektovanih);
-
-
-
-        docRef.collection("sastojci")
-                .get()
+  docRef.collection("sastojci")                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -230,8 +221,7 @@ public class SearchActivity extends AppCompatActivity {
                         }
 
                     }
-                });
-
+                });*/
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override

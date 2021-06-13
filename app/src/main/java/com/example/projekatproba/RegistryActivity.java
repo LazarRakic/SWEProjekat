@@ -177,6 +177,10 @@ public class RegistryActivity extends AppCompatActivity {
                                 if(task.getResult().size()==0)
                                 {
                                     Log.d("TAG","User not exist");
+
+
+
+
                                     baseAuth.createUserWithEmailAndPassword(emaiL, passworD).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
