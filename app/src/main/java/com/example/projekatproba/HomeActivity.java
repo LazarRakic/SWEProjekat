@@ -2,27 +2,40 @@ package com.example.projekatproba;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,6 +48,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     TextView email;
     ImageView srch;
     ImageView image;
+    ImageView userProfiles;
+
+    List<String> datum;
+    List<String> mail;
+    List<String> ime;
+    List<String> sifra;
+    List<String> slikeUrl;
+    List<String> prezime;
+    List<String> korime;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +91,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         username=headerView.findViewById(R.id.usrnameNav);
         email=headerView.findViewById(R.id.emailNav);
         image= headerView.findViewById(R.id.profilePicture);
+        userProfiles=findViewById(R.id.users);
         String user1=user.getUid();
         Log.d("TAG", user1+" AAAAAAAAAAAAAAAAAAAAAA");
         DocumentReference documentReference=docRef.collection("korisnici").document(user1);
@@ -85,6 +111,79 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 } else {
                     Log.d("TAG", "get failed with ", task.getException());
                 }
+            }
+        });
+
+        userProfiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText pretraga = new EditText (v.getContext());
+                AlertDialog.Builder pretragaDijalog = new AlertDialog.Builder(v.getContext());
+                pretragaDijalog.setTitle("Pretraga profila");
+                pretragaDijalog.setMessage("Unesite username za profil za koji želite da vršite pretragu");
+                pretragaDijalog.setView(pretraga);
+
+                pretragaDijalog.setPositiveButton("Pretraga", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Toast.makeText(HomeActivity.this, "Uspesno! ", Toast.LENGTH_SHORT).show();
+                        Log.d("TAG:","MAJKOOOOOOOOOOOOOOOOOOO " + pretraga.getText().toString());
+
+                        CollectionReference usersRef= docRef.collection("korisnici");
+                        Query query=usersRef.whereEqualTo("username",pretraga.getText().toString());
+
+                           query.get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                String pom = document.getString("username");
+
+
+                                                if(pom.equals(pretraga.getText().toString()))
+                                                {
+                                                    //startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                                                    Toast.makeText(HomeActivity.this, "Uspesno uspesno majko :( ! ", Toast.LENGTH_SHORT).show();
+                                                    break;
+
+                                                }
+
+                                                Log.d("TAG","user exist");
+                                                /*datum.add(document.get("date").toString());
+                                                mail.add(document.get("email").toString());
+                                                ime.add(document.get("name").toString());
+                                                sifra.add(document.get("password").toString());
+                                                slikeUrl.add(document.get("profileImageUrl").toString());
+                                                prezime.add(document.get("surname").toString());
+                                                korime.add(document.get("username").toString());*/
+
+
+
+                                            }
+
+
+
+                                        } else {
+                                            Log.d("TAG", "Error getting documents: ", task.getException());
+                                        }
+
+                                    }
+                                });
+
+                        //startActivity(new Intent(getApplicationContext(), ProfileFragment.class));
+
+                    }
+                });
+
+                pretragaDijalog.setNegativeButton("Odustani", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(HomeActivity.this, "Neuspesno! ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                pretragaDijalog.create().show();
             }
         });
 

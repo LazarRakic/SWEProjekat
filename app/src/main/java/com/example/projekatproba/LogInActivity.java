@@ -66,7 +66,7 @@ public class LogInActivity extends AppCompatActivity {
                 EditText resetMail = new EditText (v.getContext());
                 AlertDialog.Builder passwordResetDijalog = new AlertDialog.Builder(v.getContext());
                 passwordResetDijalog.setTitle("Resetovati Lozinku?");
-                passwordResetDijalog.setMessage("Unesite vašu email adresu da dobijete link za oporaka naloga!");
+                passwordResetDijalog.setMessage("Unesite vašu email adresu da dobijete link za oporavak naloga!");
                 passwordResetDijalog.setView(resetMail);
 
                 passwordResetDijalog.setPositiveButton("Da", new DialogInterface.OnClickListener() {
@@ -76,12 +76,12 @@ public class LogInActivity extends AppCompatActivity {
                         baseAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                Toast.makeText(LogInActivity.this, "Link za oporaka naloga je poslat na vaš mail.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LogInActivity.this, "Link za oporavak naloga je poslat na vaš mail.", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull  Exception e) {
-                                Toast.makeText(LogInActivity.this, "Greška! Link za oporaka naloga nije poslat! ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LogInActivity.this, "Greška! Link za oporavak naloga nije poslat! ", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
