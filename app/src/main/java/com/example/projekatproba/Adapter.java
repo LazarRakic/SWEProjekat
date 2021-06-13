@@ -40,6 +40,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         this.nizSelektovanih=new ArrayList<>();
 
     }
+    public void copyConstructor(Adapter adapter){
+        this.titles=adapter.titles;
+        this.images=adapter.images;
+        this.inflater= adapter.inflater;
+        this.nizSelektovanih=adapter.nizSelektovanih;
+    }
 
 
 
