@@ -1,6 +1,7 @@
 package com.example.projekatproba;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -49,14 +52,14 @@ public class ProfileFragment extends Fragment {
     //TODO :d
 
     ImageView image;
-    Button changeProfile;
-    Button changeData;
+    ImageView changeProfilePicture;
     String imageUrl;
     Uri imageUri;
     TextView username;
     TextView email;
     ListView listView;
     FirebaseAuth baseAuth;
+    FirebaseUser user;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
     StorageReference storage;
 
@@ -67,15 +70,14 @@ public class ProfileFragment extends Fragment {
 
         View view= inflater.inflate(R.layout.fragment_profile, container, false);
 
-        FirebaseUser user=baseAuth.getInstance().getCurrentUser();
+        baseAuth=FirebaseAuth.getInstance();
+        user= baseAuth.getCurrentUser();
         storage= FirebaseStorage.getInstance().getReference();
         String userIdValue=user.getUid();
         username=  view.findViewById(R.id.userName);
         email= view.findViewById(R.id.eMail);
         image=view.findViewById(R.id.profile_image);
-        changeProfile=view.findViewById(R.id.changeProfile);
-        changeData= view.findViewById(R.id.changeData);
-
+        changeProfilePicture=view.findViewById(R.id.changeProfilePicture);
 
         CollectionReference usersRef= docRef.collection("korisnici");
         usersRef.get()
@@ -104,7 +106,7 @@ public class ProfileFragment extends Fragment {
 
 
 
-        changeProfile.setOnClickListener(new View.OnClickListener() {
+        changeProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Idemo na galeriju i biranje slika
@@ -112,13 +114,6 @@ public class ProfileFragment extends Fragment {
 
                 Intent openGallery=new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGallery,1000);
-            }
-        });
-
-        changeData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ChangeProfileDataActivity.class));
             }
         });
 
