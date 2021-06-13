@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="5dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="#5703DAC5">
+        app:cardBackgroundColor="#2196F3">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
@@ -49,6 +49,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
