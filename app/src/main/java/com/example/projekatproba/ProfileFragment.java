@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -52,6 +53,7 @@ public class ProfileFragment extends Fragment {
     //TODO :d
 
     ImageView image;
+    Button dodajRecept;
     ImageView changeProfilePicture;
     String imageUrl;
     Uri imageUri;
@@ -78,6 +80,8 @@ public class ProfileFragment extends Fragment {
         email= view.findViewById(R.id.eMail);
         image=view.findViewById(R.id.profile_image);
         changeProfilePicture=view.findViewById(R.id.changeProfilePicture);
+        dodajRecept=view.findViewById(R.id.dodaj_recept);
+
 
         CollectionReference usersRef= docRef.collection("korisnici");
         usersRef.get()
@@ -90,8 +94,9 @@ public class ProfileFragment extends Fragment {
                                 {
                                     username.setText(document.get("username").toString());
                                     email.setText(document.get("email").toString());
-                                    Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
-
+                                    if(!(document.get("profileImageUrl").toString().equals("default"))) {
+                                        Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
+                                    }
 
                                     Log.d("TAG", document.getId() + " => " + document.get("username"));
                                     break;
@@ -114,6 +119,14 @@ public class ProfileFragment extends Fragment {
 
                 Intent openGallery=new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGallery,1000);
+            }
+        });
+
+        dodajRecept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //otvaramo novi search activity
+                startActivity(new Intent(getActivity(), DodavanjeRecepata.class));
             }
         });
 
@@ -155,6 +168,8 @@ public class ProfileFragment extends Fragment {
                 Uri downloaduri=task.getResult();
                 imageUrl=downloaduri.toString();
 
+
+
                 DocumentReference documentReference= docRef.collection("korisnici").document(baseAuth.getInstance().getCurrentUser().getUid());
 
                 documentReference.update(
@@ -162,8 +177,13 @@ public class ProfileFragment extends Fragment {
                 ).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
+
+                        if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "Slika uspešno ažurirana.", Toast.LENGTH_SHORT).show();
+                        //    Intent intent = new Intent(this, MyNewActivity.class);
+                         //   startActivity(intent);
+                            startActivity(new Intent(getContext(), HomeActivity.class));
+                        }
                         else {
                             Toast.makeText(getContext(), "Greška prilikom ažuriranja slike.", Toast.LENGTH_SHORT).show();
                         }

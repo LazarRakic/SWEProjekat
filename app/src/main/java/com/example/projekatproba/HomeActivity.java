@@ -103,6 +103,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     if (document.exists()) {
                         username.setText(document.get("username").toString());
                         email.setText(document.get("email").toString());
+                        if(!(document.get("profileImageUrl").toString().equals("default")))
                         Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
                         Log.d("TAG:", "DocumentSnapshot data: " + document.getData());
                     } else {
