@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.projekatproba">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,11 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjekatProba">
-		        <activity android:name=".ChangeProfileDataActivity"></activity>
-        <activity android:name=".ChangePasswordActivity"></activity>
-        <activity android:name=".DeleteAccountActivity" />
+        <activity android:name=".ChangePasswordActivity"></activity><activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ChangeProfileDataActivity" />
+        <activity android:name=".ChangePasswordActivity" />        <activity android:name=".DeleteAccountActivity" />
         <activity android:name=".ChangeUsernameActivity" />
-        <activity android:name=".SearchActivity" android:theme="@style/Theme.ProjekatProba.NoActionBar"/>
+        <activity
+            android:name=".SearchActivity"
+            android:theme="@style/Theme.ProjekatProba.NoActionBar" />
         <activity android:name=".RegistryActivity" />
         <activity
             android:name=".HomeActivity"
@@ -29,5 +29,7 @@
         </activity>
         <activity android:name=".LogInActivity" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

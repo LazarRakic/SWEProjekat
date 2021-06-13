@@ -53,6 +53,7 @@ public class ProfileFragment extends Fragment {
     //TODO :d
 
     ImageView image;
+    Button dodajRecept;
     ImageView changeProfilePicture;
     String imageUrl;
     Uri imageUri;
@@ -79,6 +80,8 @@ public class ProfileFragment extends Fragment {
         email= view.findViewById(R.id.eMail);
         image=view.findViewById(R.id.profile_image);
         changeProfilePicture=view.findViewById(R.id.changeProfilePicture);
+        dodajRecept=view.findViewById(R.id.dodaj_recept);
+
 
         CollectionReference usersRef= docRef.collection("korisnici");
         usersRef.get()
@@ -91,7 +94,9 @@ public class ProfileFragment extends Fragment {
                                 {
                                     username.setText(document.get("username").toString());
                                     email.setText(document.get("email").toString());
-                                    Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
+                                    if(!(document.get("profileImageUrl").toString().equals("default"))) {
+                                        Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
+                                    }
 
                                     Log.d("TAG", document.getId() + " => " + document.get("username"));
                                     break;
@@ -114,6 +119,14 @@ public class ProfileFragment extends Fragment {
 
                 Intent openGallery=new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGallery,1000);
+            }
+        });
+
+        dodajRecept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //otvaramo novi search activity
+                startActivity(new Intent(getActivity(), DodavanjeRecepata.class));
             }
         });
 
