@@ -221,7 +221,7 @@ public class SearchActivity extends AppCompatActivity {
                         }
 
                     }
-                });*/
+                });
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
