@@ -180,8 +180,6 @@ public class ProfileFragment extends Fragment {
 
                         if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "Slika uspešno ažurirana.", Toast.LENGTH_SHORT).show();
-                        //    Intent intent = new Intent(this, MyNewActivity.class);
-                         //   startActivity(intent);
                             startActivity(new Intent(getContext(), HomeActivity.class));
                         }
                         else {
