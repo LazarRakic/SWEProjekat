@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -92,7 +93,6 @@ public class ProfileFragment extends Fragment {
                                     email.setText(document.get("email").toString());
                                     Picasso.get().load(document.get("profileImageUrl").toString()).into(image);
 
-
                                     Log.d("TAG", document.getId() + " => " + document.get("username"));
                                     break;
                                 }
@@ -155,6 +155,8 @@ public class ProfileFragment extends Fragment {
                 Uri downloaduri=task.getResult();
                 imageUrl=downloaduri.toString();
 
+
+
                 DocumentReference documentReference= docRef.collection("korisnici").document(baseAuth.getInstance().getCurrentUser().getUid());
 
                 documentReference.update(
@@ -162,8 +164,10 @@ public class ProfileFragment extends Fragment {
                 ).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
+
+                        if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "Slika uspešno ažurirana.", Toast.LENGTH_SHORT).show();
+                        }
                         else {
                             Toast.makeText(getContext(), "Greška prilikom ažuriranja slike.", Toast.LENGTH_SHORT).show();
                         }
