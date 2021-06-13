@@ -38,7 +38,7 @@ public class SearchActivity extends AppCompatActivity {
     List<String> images;
     Adapter adapter;
     ImageView home;
- TextView pretrazi;
+    TextView pretrazi;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
 
     @Override
