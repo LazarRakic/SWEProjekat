@@ -51,7 +51,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                          //          DocumentReference documentReference= docRef.collection("korisnici").document(baseAuth.getInstance().getCurrentUser().getUid());
+                          //          DocumentReference documentReference= docRef.collection("krentUser().getUid());
 
                                     docRef.collection("korisnici").document(user.getUid().toString())
                                             .delete()
