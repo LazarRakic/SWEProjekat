@@ -27,7 +27,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DodavanjeRecepata extends AppCompatActivity {
+public class DodavanjeRecepataActivity extends AppCompatActivity {
 
     ImageView slika;
     EditText priprema;
@@ -83,7 +83,7 @@ public class DodavanjeRecepata extends AppCompatActivity {
 
                             Log.d("TAG", titles.toString() + " => " + images.toString());
                             adapter = new Adapter(sada, titles, images);
-                            GridLayoutManager gridLayoutManager = new GridLayoutManager(DodavanjeRecepata.this, 4, GridLayoutManager.VERTICAL, false);
+                            GridLayoutManager gridLayoutManager = new GridLayoutManager(DodavanjeRecepataActivity.this, 4, GridLayoutManager.VERTICAL, false);
                             dataList.setLayoutManager(gridLayoutManager);
                             dataList.setAdapter(adapter);
 

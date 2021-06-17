@@ -47,7 +47,6 @@ TextView pretrazi;
         setContentView(R.layout.activity_search);
 
         home= findViewById(R.id.homeImageTool);
-        pretrazi = findViewById(R.id.pretraziPoSastojcima);
 
 
 
@@ -242,8 +241,6 @@ TextView pretrazi;
 
 
 
-
-
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -253,13 +250,7 @@ TextView pretrazi;
             }
         });
 
-        pretrazi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selektovaniSastojci=adapter.nizSelektovanih;
-                Log.d("NIZARA NIZARA ALE ALE",selektovaniSastojci.toString());
-            }
-        });
+
 
     }
 

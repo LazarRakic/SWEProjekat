@@ -35,6 +35,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -46,6 +48,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProfileFragment extends Fragment {
@@ -54,6 +57,7 @@ public class ProfileFragment extends Fragment {
 
     ImageView image;
     Button dodajRecept;
+    Button promeniRecept;
     ImageView changeProfilePicture;
     String imageUrl;
     Uri imageUri;
@@ -64,6 +68,11 @@ public class ProfileFragment extends Fragment {
     FirebaseUser user;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
     StorageReference storage;
+
+    RecyclerView recyclerView;
+    List<Recept> receptList;
+    Recept recept;
+    AdapterRecepti adapterRecepti;
 
     @Nullable
     @Override
@@ -81,6 +90,10 @@ public class ProfileFragment extends Fragment {
         image=view.findViewById(R.id.profile_image);
         changeProfilePicture=view.findViewById(R.id.changeProfilePicture);
         dodajRecept=view.findViewById(R.id.dodaj_recept);
+        promeniRecept= view.findViewById(R.id.promeni_recept);
+
+        recyclerView =(RecyclerView) view.findViewById(R.id.recepti);
+        receptList=new ArrayList<>();
 
 
         CollectionReference usersRef= docRef.collection("korisnici");
@@ -109,6 +122,32 @@ public class ProfileFragment extends Fragment {
                 });
         Log.d("TAG",usersRef.getId().toString()+" AAAAAAAAAAAAAAAAAAAAAA");
 
+        CollectionReference receptRef= docRef.collection("recepti");
+        receptRef.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if(document.getString("idPublishera").equals(userIdValue))
+                                {
+
+                                    GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 1);
+                                    recyclerView.setLayoutManager(gridLayoutManager);
+
+                                    recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"));
+                                    receptList.add(recept);
+                                    adapterRecepti= new AdapterRecepti(getContext(), receptList);
+                                    recyclerView.setAdapter(adapterRecepti);
+
+                                }
+                            }
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
 
 
         changeProfilePicture.setOnClickListener(new View.OnClickListener() {
@@ -125,10 +164,16 @@ public class ProfileFragment extends Fragment {
         dodajRecept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //otvaramo novi search activity
-                startActivity(new Intent(getActivity(), DodavanjeRecepata.class));
+                startActivity(new Intent(getActivity(), DodavanjeRecepataActivity.class));
             }
         });
+
+/*        promeniRecept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), PromenaRecepataActivity.class));
+            }
+        });*/
 
         return view;//TODO
     }
@@ -180,8 +225,6 @@ public class ProfileFragment extends Fragment {
 
                         if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "Slika uspešno ažurirana.", Toast.LENGTH_SHORT).show();
-                        //    Intent intent = new Intent(this, MyNewActivity.class);
-                         //   startActivity(intent);
                             startActivity(new Intent(getContext(), HomeActivity.class));
                         }
                         else {

@@ -4,19 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DodavanjeRecepata">
+    tools:context=".DodavanjeRecepataActivity">
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="375dp"
-        android:layout_height="232dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
+        android:src="@drawable/ic_launcher_background" />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Naziv recepta"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/naziv_recepta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"/>
 
     <EditText
         android:id="@+id/pripremaPlainText"
@@ -25,12 +40,13 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
+        android:textSize="15sp"
         android:ems="10"
         android:hint="Priprema"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/naziv_recepta" />
 
     <TextView
         android:id="@+id/sastojciPlanText"
@@ -45,6 +61,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pripremaPlainText" />
+
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listaSastojaka"
