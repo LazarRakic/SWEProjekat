@@ -1,5 +1,6 @@
 package com.example.projekatproba;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +39,9 @@ import java.util.regex.Pattern;
 
 public class AdapterSastojci extends RecyclerView.Adapter<SastojciHolder> {
 
+    private static int lastClickedPosition = -1;
+    private int selectedItem;
+
     Context ctx;
     List<Sastojak> sastojakList;
     List<String> nizSelektovanih;
@@ -47,6 +51,7 @@ public class AdapterSastojci extends RecyclerView.Adapter<SastojciHolder> {
         this.ctx = ctx;
         this.sastojakList = sastojakList;
         this.nizSelektovanih=new ArrayList<>();
+        this.selectedItem=-1;
     }
     @NonNull
     @Override
@@ -58,18 +63,28 @@ public class AdapterSastojci extends RecyclerView.Adapter<SastojciHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SastojciHolder sastojciHolder, int position) {
+    public void onBindViewHolder(@NonNull SastojciHolder sastojciHolder, @SuppressLint("RecyclerView") int position) {
 
+        sastojciHolder.itemView.setTag(sastojakList.get(position));
 
         Picasso.get().load(String.valueOf(sastojakList.get(position).getUrlSlike())).into(sastojciHolder.imageView);
         sastojciHolder.mTitle.setText(sastojakList.get(position).getIme());
 
+        //sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
 
+        if(selectedItem==position){
+            sastojciHolder.mCardView.setCardBackgroundColor(Color.parseColor("#008000"));
+        }
 
-
-        sastojciHolder.mCardView.setOnClickListener(new View.OnClickListener() {
+        sastojciHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int previousItem = selectedItem;
+                selectedItem = position;
+
+                notifyItemChanged(previousItem);
+                notifyItemChanged(position);
+
                 Pattern p=Pattern.compile(sastojciHolder.mTitle.getText().toString());
                 String s="";
                 for(String pom : nizSelektovanih){
@@ -78,7 +93,7 @@ public class AdapterSastojci extends RecyclerView.Adapter<SastojciHolder> {
                 Matcher m=p.matcher(s);
                 if(!m.find()) {
                     nizSelektovanih.add(sastojciHolder.mTitle.getText().toString());
-                    sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#008000"));
+                    //sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#008000"));
                     Log.d("TITLE SASTOJKA", sastojciHolder.mTitle.getText().toString());
                     Log.d("NIZ SELEKTOVANIH", nizSelektovanih.toString());
                 }
@@ -86,21 +101,43 @@ public class AdapterSastojci extends RecyclerView.Adapter<SastojciHolder> {
                     for(int i=0;i<nizSelektovanih.size();i++ ){
                         if( nizSelektovanih.get(i).equals(sastojciHolder.mTitle.getText().toString())){
                             nizSelektovanih.remove(i);
-                            sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
+                           // sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
                             break;
                         }
                     }
                     Log.d("NIZ SELEKTOVANIH", nizSelektovanih.toString());
                 }
 
-//                Intent intent= new Intent(ctx, ReceptDetaljActivity.class);
-//                ArrayList<String> lista= new ArrayList<>();
-//                lista.add(sastojakList.get(sastojciHolder.getAdapterPosition()).getIme());
-//                lista.add(sastojakList.get(sastojciHolder.getAdapterPosition()).getUrlSlike());
-//                intent.putStringArrayListExtra("Lista", lista);
-//                ctx.startActivity(intent);
             }
         });
+
+//        sastojciHolder.mCardView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Pattern p=Pattern.compile(sastojciHolder.mTitle.getText().toString());
+//                String s="";
+//                for(String pom : nizSelektovanih){
+//                    s+=pom;
+//                }
+//                Matcher m=p.matcher(s);
+//                if(!m.find()) {
+//                    nizSelektovanih.add(sastojciHolder.mTitle.getText().toString());
+//                    sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#008000"));
+//                    Log.d("TITLE SASTOJKA", sastojciHolder.mTitle.getText().toString());
+//                    Log.d("NIZ SELEKTOVANIH", nizSelektovanih.toString());
+//                }
+//                else{
+//                    for(int i=0;i<nizSelektovanih.size();i++ ){
+//                        if( nizSelektovanih.get(i).equals(sastojciHolder.mTitle.getText().toString())){
+//                            nizSelektovanih.remove(i);
+//                            sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
+//                            break;
+//                        }
+//                    }
+//                    Log.d("NIZ SELEKTOVANIH", nizSelektovanih.toString());
+//                }
+//            }
+//        });
 
     }
 

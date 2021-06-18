@@ -29,15 +29,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_baseline_home_24" />
+
         <TextView
             android:id="@+id/pretraziPoSastojcima"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pretrazi"
             android:layout_marginLeft="320dp"
-            android:textSize="18sp"
-            />
-
+            android:text="Pretrazi"
+            android:textSize="18sp" />
 
 
     </androidx.appcompat.widget.Toolbar>
