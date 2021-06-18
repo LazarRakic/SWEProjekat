@@ -51,6 +51,8 @@ public class SearchActivity extends AppCompatActivity {
         this.sastojakList=new ArrayList<Sastojak>();
         this.selektovaniSastojci=new ArrayList<String>();
 
+        pretrazi = findViewById(R.id.pretraziPoSastojcima);
+
         Context sada = this;
 
         docRef.collection("sastojci")
@@ -87,8 +89,12 @@ public class SearchActivity extends AppCompatActivity {
                 Log.d("NIZARA NIZARA ALE ALE",selektovaniSastojci.toString());
             }
         });
-
-
+        pretrazi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //TODO PRETRAGA
+            }
+        });
 
     }
 
