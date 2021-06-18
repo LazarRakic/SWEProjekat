@@ -7,17 +7,18 @@
     android:id="@+id/constraintLayout">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewSastojak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:paddingBottom="10dp"
+        app:cardBackgroundColor="#2196F3"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="2dp"
-        app:cardBackgroundColor="#2196F3">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
@@ -28,9 +29,9 @@
                 android:id="@+id/imageView2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:foregroundGravity="center_horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"

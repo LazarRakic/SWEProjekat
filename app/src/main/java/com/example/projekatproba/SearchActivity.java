@@ -34,11 +34,10 @@ public class SearchActivity extends AppCompatActivity {
 
     List<String> selektovaniSastojci;
     RecyclerView dataList;
-    List<String> titles;
-    List<String> images;
-    Adapter adapter;
+    List<Sastojak> sastojakList;
+    AdapterSastojci adapterSastojci;
     ImageView home;
-TextView pretrazi;
+    TextView pretrazi;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
 
     @Override
@@ -48,168 +47,12 @@ TextView pretrazi;
 
         home= findViewById(R.id.homeImageTool);
 
-
-
         dataList= findViewById(R.id.dataList);
-
-        titles= new ArrayList<>();
-        images= new ArrayList<>();
+        this.sastojakList=new ArrayList<Sastojak>();
         this.selektovaniSastojci=new ArrayList<String>();
-
 
         Context sada = this;
 
-           /* docRef.collection("meso")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                    titles.add(document.get("naziv").toString());
-                                    images.add(document.get("sImgUrl").toString());
-
-
-                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
-                                }
-
-                                Log.d("TAG", titles.toString() + " => " + images.toString());
-                                adapter = new Adapter(sada, titles, images);
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
-                                dataList.setLayoutManager(gridLayoutManager);
-                                dataList.setAdapter(adapter);
-                            } else {
-                                Log.d("TAG", "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-
-            docRef.collection("povrce")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                    titles.add(document.get("naziv").toString());
-                                    images.add(document.get("sImgUrl").toString());
-
-
-                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
-                                }
-
-                                Log.d("TAG", titles.toString() + " => " + images.toString());
-                                adapter = new Adapter(sada, titles, images);
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
-                                dataList.setLayoutManager(gridLayoutManager);
-                                dataList.setAdapter(adapter);
-                            } else {
-                                Log.d("TAG", "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-
-            docRef.collection("ostalo")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                    titles.add(document.get("naziv").toString());
-                                    images.add(document.get("sImgUrl").toString());
-
-
-                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
-                                }
-
-                                Log.d("TAG", titles.toString() + " => " + images.toString());
-                                adapter = new Adapter(sada, titles, images);
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
-                                dataList.setLayoutManager(gridLayoutManager);
-                                dataList.setAdapter(adapter);
-                            } else {
-                                Log.d("TAG", "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-
-            docRef.collection("zacini")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                    titles.add(document.get("naziv").toString());
-                                    images.add(document.get("sImgUrl").toString());
-
-
-                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
-                                }
-
-                                Log.d("TAG", titles.toString() + " => " + images.toString());
-                                adapter = new Adapter(sada, titles, images);
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
-                                dataList.setLayoutManager(gridLayoutManager);
-                                dataList.setAdapter(adapter);
-                            } else {
-                                Log.d("TAG", "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-
-            docRef.collection("voce")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                    titles.add(document.get("naziv").toString());
-                                    images.add(document.get("sImgUrl").toString());
-
-
-                                    Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
-                                }
-
-                                Log.d("TAG", titles.toString() + " => " + images.toString());
-                                adapter = new Adapter(sada, titles, images);
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
-                                dataList.setLayoutManager(gridLayoutManager);
-                                dataList.setAdapter(adapter);
-                            } else {
-                                Log.d("TAG", "Error getting documents: ", task.getException());
-                            }
-
-                        }
-                    });*/
-
-
-
-
-         //sel ektovaniSastojci.addAll(adapter.nizSelektovanih);
-
-
-
-
-
-
-
-         //sel ektovaniSastojci.addAll(adapter.nizSelektovanih);
-
-
-        //PROBA PROBA PROBA
         docRef.collection("sastojci")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -217,20 +60,18 @@ TextView pretrazi;
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                Sastojak sastojak = new Sastojak(document.get("naziv").toString(),document.get("sImgUrl").toString());
 
-
-                                titles.add(document.get("naziv").toString());
-                                images.add(document.get("sImgUrl").toString());
+                                sastojakList.add(sastojak);
 
 
                                 Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
                             }
-
-                            Log.d("TAG", titles.toString() + " => " + images.toString());
-                            adapter = new Adapter(sada, titles, images);
+                            sastojakList.forEach(e ->Log.d("TAG","Sastojak"+e.getIme()) );
+                            adapterSastojci = new AdapterSastojci(sada, sastojakList);
                             GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
                             dataList.setLayoutManager(gridLayoutManager);
-                            dataList.setAdapter(adapter);
+                            dataList.setAdapter(adapterSastojci);
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
@@ -238,13 +79,10 @@ TextView pretrazi;
                     }
                 });
 
-
-
-
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selektovaniSastojci.addAll(adapter.nizSelektovanih);
+                selektovaniSastojci.addAll(adapterSastojci.nizSelektovanih);
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 Log.d("NIZARA NIZARA ALE ALE",selektovaniSastojci.toString());
             }
