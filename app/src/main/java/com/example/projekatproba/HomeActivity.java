@@ -35,6 +35,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -126,7 +128,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        Toast.makeText(HomeActivity.this, "Uspesno! ", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HomeActivity.this, "Uspesno! ", Toast.LENGTH_SHORT).show();
                         Log.d("TAG:","MAJKOOOOOOOOOOOOOOOOOOO " + pretraga.getText().toString());
 
                         CollectionReference usersRef= docRef.collection("korisnici");
@@ -144,20 +146,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                                 if(pom.equals(pretraga.getText().toString()))
                                                 {
                                                     //startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                                                    Toast.makeText(HomeActivity.this, "Uspesno uspesno majko :( ! ", Toast.LENGTH_SHORT).show();
-                                                    break;
+                                                    //Toast.makeText(HomeActivity.this, "Uspesno uspesno majko :( ! ", Toast.LENGTH_SHORT).show();
+
+                                                    ArrayList<String> lista;
+                                                    lista=new ArrayList<>();
+
+                                                    lista.add(document.get("email").toString());
+                                                    lista.add(document.get("name").toString());
+                                                    lista.add(document.get("surname").toString());
+                                                    lista.add(document.get("profileImageUrl").toString());
+                                                    lista.add(document.get("username").toString());
+                                                    lista.add(document.getId());
+
+
+                                                    Intent intent=new Intent(HomeActivity.this, ProfileActivity.class);
+                                                    intent.putStringArrayListExtra("List", lista);
+                                                    startActivity(intent);
+
+
 
                                                 }
+                                                else
+
+                                                    Toast.makeText(HomeActivity.this, "Traženi korisnik ne postoji! ", Toast.LENGTH_SHORT).show();
+
 
                                                 Log.d("TAG","user exist");
-                                                /*datum.add(document.get("date").toString());
-                                                mail.add(document.get("email").toString());
-                                                ime.add(document.get("name").toString());
-                                                sifra.add(document.get("password").toString());
-                                                slikeUrl.add(document.get("profileImageUrl").toString());
-                                                prezime.add(document.get("surname").toString());
-                                                korime.add(document.get("username").toString());*/
-
 
 
                                             }
@@ -179,7 +193,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 pretragaDijalog.setNegativeButton("Odustani", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeActivity.this, "Neuspesno! ", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(HomeActivity.this, "Neuspesno! ", Toast.LENGTH_SHORT).show();
                     }
                 });
                 pretragaDijalog.create().show();

@@ -236,7 +236,9 @@ TextView pretrazi;
                         }
 
                     }
-                });*/
+                });
+
+
 
 
         home.setOnClickListener(new View.OnClickListener() {
