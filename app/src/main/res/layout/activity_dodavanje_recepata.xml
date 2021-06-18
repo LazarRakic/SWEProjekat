@@ -58,6 +58,7 @@
         android:ems="10"
         android:hint="Sastojci"
         android:inputType="textPersonName"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pripremaPlainText" />
@@ -65,11 +66,32 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listaSastojaka"
-        android:layout_width="376dp"
-        android:layout_height="258dp"
+        android:layout_width="373dp"
+        android:layout_height="194dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sastojciPlanText" />
+
+    <Button
+        android:id="@+id/prikaziSastojke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:text="Prikazi sastojke"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listaSastojaka" />
+
+    <Button
+        android:id="@+id/objaviRecept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:text="Objavi recept"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listaSastojaka" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
