@@ -35,8 +35,8 @@ import java.util.Map;
 
 public class AdapterRecepti extends RecyclerView.Adapter<ReceptHolder> {
 
-     Context ctx;
-     List<Recept> receptList;
+    Context ctx;
+    List<Recept> receptList;
     FirebaseAuth baseAuth;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
     DocumentReference documentRef;
