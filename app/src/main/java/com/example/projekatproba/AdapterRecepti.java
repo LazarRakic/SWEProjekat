@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -128,10 +129,16 @@ public class AdapterRecepti extends RecyclerView.Adapter<ReceptHolder> {
                 lista.add(receptList.get(receptHolder.getAdapterPosition()).getSlika());
                 lista.add(receptList.get(receptHolder.getAdapterPosition()).getPriprema());
                 intent.putStringArrayListExtra("Lista", lista);
-             //   intent.putExtra("Recept2", receptList.get(receptHolder.getAdapterPosition()).getSlika());
-             //   intent.putExtra("Opis", receptList.get(receptHolder.getAdapterPosition()).getPriprema());
                 ctx.startActivity(intent);
-            //    ctx.startActivity(new Intent(ctx, ReceptDetaljActivity.class));
+            }
+        });
+
+        receptHolder.ocenite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s= String.valueOf(receptHolder.ratingBar.getRating());
+                Toast.makeText(ctx.getApplicationContext(), s+"Star", Toast.LENGTH_SHORT).show();
+                
             }
         });
 
@@ -150,6 +157,8 @@ class ReceptHolder extends RecyclerView.ViewHolder{
     CardView mCardView;
     Button deleteButt;
     Button updateButt;
+    RatingBar ratingBar;
+    Button ocenite;
 
 
     public ReceptHolder(View itemView) {
@@ -160,7 +169,8 @@ class ReceptHolder extends RecyclerView.ViewHolder{
         mDescription= itemView.findViewById(R.id.opisRecepta);
         deleteButt= itemView.findViewById(R.id.obrisi_recept);
         updateButt=itemView.findViewById(R.id.promeni_recept);
-
+        ratingBar=itemView.findViewById(R.id.rating_bar);
+        ocenite=itemView.findViewById(R.id.button_recenzija);
         mCardView= itemView.findViewById(R.id.cardViewRecept);
     }
 }
