@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,7 +46,6 @@ public class AdapterSastojci extends RecyclerView.Adapter<SastojciHolder> {
     List<Sastojak> sastojakList;
     List<String> nizSelektovanih;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
-    private int lastChecked = -1;
 
     public AdapterSastojci(Context ctx, List<Sastojak> sastojakList) {
         this.ctx = ctx;
@@ -65,12 +63,20 @@ public class AdapterSastojci extends RecyclerView.Adapter<SastojciHolder> {
     }
 
     @Override
-    
+    public void onBindViewHolder(@NonNull SastojciHolder sastojciHolder, @SuppressLint("RecyclerView") int position) {
+
+        sastojciHolder.itemView.setTag(sastojakList.get(position));
 
         Picasso.get().load(String.valueOf(sastojakList.get(position).getUrlSlike())).into(sastojciHolder.imageView);
         sastojciHolder.mTitle.setText(sastojakList.get(position).getIme());
 
-        sastojciHolder.mCardView.setOnClickListener(new View.OnClickListener() {
+        //sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
+
+        if(selectedItem==position){
+            sastojciHolder.mCardView.setCardBackgroundColor(Color.parseColor("#008000"));
+        }
+
+        sastojciHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int previousItem = selectedItem;
@@ -95,7 +101,7 @@ public class AdapterSastojci extends RecyclerView.Adapter<SastojciHolder> {
                     for(int i=0;i<nizSelektovanih.size();i++ ){
                         if( nizSelektovanih.get(i).equals(sastojciHolder.mTitle.getText().toString())){
                             nizSelektovanih.remove(i);
-                           // sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
+                            // sastojciHolder.mCardView.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
                             break;
                         }
                     }
@@ -157,4 +163,3 @@ class SastojciHolder extends RecyclerView.ViewHolder{
         mCardView= itemView.findViewById(R.id.cardViewSastojak);
     }
 }
-

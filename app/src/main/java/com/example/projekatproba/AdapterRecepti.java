@@ -138,7 +138,7 @@ public class AdapterRecepti extends RecyclerView.Adapter<ReceptHolder> {
             public void onClick(View v) {
                 String s= String.valueOf(receptHolder.ratingBar.getRating());
                 Toast.makeText(ctx.getApplicationContext(), s+"Star", Toast.LENGTH_SHORT).show();
-                
+
             }
         });
 
