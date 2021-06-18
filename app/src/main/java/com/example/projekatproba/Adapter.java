@@ -85,11 +85,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-                    //Intent intent = new Intent(itemView.getContext(), ModifyPers.class);
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    //Log.v("nom",nom);
 
-                   // itemView.getContext().startActivity(intent);
                     Pattern p=Pattern.compile(title.getText().toString());
                     String s="";
                     for(String pom : nizSelektovanih){
@@ -112,25 +108,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         }
                         Log.d("NIZ SELEKTOVANIH", nizSelektovanih.toString());
                     }
-
-                    /*String uljez = title.getText().toString();
-                    boolean istinitost = false;
-                    int x=0;
-                    for(int i=0;i<nizSelektovanih.size();i++ ){
-                        if(nizSelektovanih.get(i).equals(uljez))
-                        {   x=i;
-                            istinitost=true;
-                            break;
-                        }
-                    }
-                    if(!istinitost){
-                        nizSelektovanih.add(title.getText().toString());
-                        view.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#008000"));
-                    }
-                    else{
-                        nizSelektovanih.remove(x);
-                        view.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#2196F3"));
-                    }*/
 
                 }
             });

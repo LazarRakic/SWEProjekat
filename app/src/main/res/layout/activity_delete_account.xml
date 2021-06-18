@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
     tools:context=".DeleteAccountActivity">
 
     <TextView
@@ -13,9 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:text="Da li ste sigurni da želite da obrišete Vaš nalog?"
-        android:textColor="#00ccff"
-        android:fontFamily="cursive"
-        android:textSize="20dp"
+
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

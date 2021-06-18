@@ -51,6 +51,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ImageView srch;
     ImageView image;
     ImageView userProfiles;
+    ImageView adding;
+    Boolean userA;
 
     List<String> datum;
     List<String> mail;
@@ -59,9 +61,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     List<String> slikeUrl;
     List<String> prezime;
     List<String> korime;
-
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +74,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         baseAuth=FirebaseAuth.getInstance();
         user=baseAuth.getCurrentUser();
+        userA=baseAuth.getCurrentUser().isAnonymous();
+        adding= findViewById(R.id.add);
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -117,72 +119,101 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        userProfiles.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText pretraga = new EditText (v.getContext());
-                AlertDialog.Builder pretragaDijalog = new AlertDialog.Builder(v.getContext());
-                pretragaDijalog.setTitle("Pretraga profila");
-                pretragaDijalog.setMessage("Unesite username za profil za koji želite da vršite pretragu");
-                pretragaDijalog.setView(pretraga);
+        if(userA == true){
+            userProfiles.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-                pretragaDijalog.setPositiveButton("Pretraga", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+            adding.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-                        Log.d("TAG:","MAJKOOOOOOOOOOOOOOOOOOO " + pretraga.getText().toString());
+        }
+        else{
+            userProfiles.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EditText pretraga = new EditText (v.getContext());
+                    AlertDialog.Builder pretragaDijalog = new AlertDialog.Builder(v.getContext());
+                    pretragaDijalog.setTitle("Pretraga profila");
+                    pretragaDijalog.setMessage("Unesite username za profil za koji želite da vršite pretragu");
+                    pretragaDijalog.setView(pretraga);
 
-                        CollectionReference usersRef= docRef.collection("korisnici");
-                        Query query=usersRef.whereEqualTo("username",pretraga.getText().toString());
+                    pretragaDijalog.setPositiveButton("Pretraga", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                           query.get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                String pom = document.getString("username");
+                            Log.d("TAG:","MAJKOOOOOOOOOOOOOOOOOOO " + pretraga.getText().toString());
 
-                                                if(pom.equals(pretraga.getText().toString()))
-                                                {
-                                                    ArrayList<String> lista;
-                                                    lista=new ArrayList<>();
+                            CollectionReference usersRef= docRef.collection("korisnici");
+                            Query query=usersRef.whereEqualTo("username",pretraga.getText().toString());
 
-                                                    lista.add(document.get("email").toString());
-                                                    lista.add(document.get("name").toString());
-                                                    lista.add(document.get("surname").toString());
-                                                    lista.add(document.get("profileImageUrl").toString());
-                                                    lista.add(document.get("username").toString());
-                                                    lista.add(document.getId());
+                            query.get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    String pom = document.getString("username");
+
+                                                    if(pom.equals(pretraga.getText().toString()))
+                                                    {
+                                                        ArrayList<String> lista;
+                                                        lista=new ArrayList<>();
+
+                                                        lista.add(document.get("email").toString());
+                                                        lista.add(document.get("name").toString());
+                                                        lista.add(document.get("surname").toString());
+                                                        lista.add(document.get("profileImageUrl").toString());
+                                                        lista.add(document.get("username").toString());
+                                                        lista.add(document.getId());
 
 
-                                                    Intent intent=new Intent(HomeActivity.this, ProfileActivity.class);
-                                                    intent.putStringArrayListExtra("List", lista);
-                                                    startActivity(intent);
-                                              }
-                                                Log.d("TAG","user exist");
+                                                        Intent intent=new Intent(HomeActivity.this, ProfileActivity.class);
+                                                        intent.putStringArrayListExtra("List", lista);
+                                                        startActivity(intent);
+                                                    }
+                                                    Log.d("TAG","user exist");
+                                                }
+                                            }
+                                            else {
+                                                Log.d("TAG", "Error getting documents: ", task.getException());
+                                            }
+                                            if(task.getResult().size()==0){
+                                                Toast.makeText(getBaseContext(), "Traženi korisnik ne postoji! ", Toast.LENGTH_SHORT).show();
                                             }
                                         }
-                                        else {
-                                            Log.d("TAG", "Error getting documents: ", task.getException());
-                                        }
-                                    if(task.getResult().size()==0){
-                                            Toast.makeText(getBaseContext(), "Traženi korisnik ne postoji! ", Toast.LENGTH_SHORT).show();
-                                    }
-                                    }
-                                });
-                    }
-                });
+                                    });
+                        }
+                    });
 
-                pretragaDijalog.setNegativeButton("Odustani", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                       // Toast.makeText(HomeActivity.this, "Neuspesno! ", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                pretragaDijalog.create().show();
-            }
-        });
+                    pretragaDijalog.setNegativeButton("Odustani", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Toast.makeText(HomeActivity.this, "Neuspesno! ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    pretragaDijalog.create().show();
+                }
+            });
+
+            adding.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getBaseContext(), DodavanjeRecepataActivity.class));
+                }
+            });
+
+
+
+        }
+
 
         srch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,7 +221,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(getBaseContext(), SearchActivity.class));
             }
         });
-
     }
 
     @Override
@@ -209,24 +239,55 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                 break;
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                if(userA == true){
+                    Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                }
                 break;
             case R.id.nav_notifications:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
-                break;
+                if(userA == true){
+                    Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
+                }                break;
             case R.id.nav_settings_username:
-                startActivity(new Intent(getApplicationContext(), ChangeUsernameActivity.class));
+                if(userA == true){
+                    Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    startActivity(new Intent(getApplicationContext(), ChangeUsernameActivity.class));
+                }
                 break;
             case R.id.nav_settings_password:
-                startActivity(new Intent(getApplicationContext(), ChangePasswordActivity.class));
+                if(userA == true){
+                    Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    startActivity(new Intent(getApplicationContext(), ChangePasswordActivity.class));
+                }
                 break;
             case R.id.nav_settings_delete_account:
-                startActivity(new Intent(getApplicationContext(), DeleteAccountActivity.class));
+                if(userA == true){
+                    Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    startActivity(new Intent(getApplicationContext(), DeleteAccountActivity.class));
+                }
                 break;
             case R.id.nav_logout:
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(), LogInActivity.class));
-                finish();
+                if(userA == true){
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                }
+                else{
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getApplicationContext(), LogInActivity.class));
+                    finish();
+                }
                 break;
         }
 
