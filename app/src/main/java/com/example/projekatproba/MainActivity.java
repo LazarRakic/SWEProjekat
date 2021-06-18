@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth baseAuth;
+    Button posetilac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
         relativeLayoutMain.startAnimation(alphaAnimation);
 
         baseAuth= FirebaseAuth.getInstance();
+        posetilac= findViewById(R.id.posetilac);
+
+        posetilac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
     }
 
     public void onUser(View v) {

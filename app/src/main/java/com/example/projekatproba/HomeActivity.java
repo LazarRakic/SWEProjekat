@@ -57,9 +57,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     List<String> slikeUrl;
     List<String> prezime;
     List<String> korime;
-
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
