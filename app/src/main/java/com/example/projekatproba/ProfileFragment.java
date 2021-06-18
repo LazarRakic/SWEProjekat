@@ -167,14 +167,6 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(getActivity(), DodavanjeRecepataActivity.class));
             }
         });
-
-/*        promeniRecept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), PromenaRecepataActivity.class));
-            }
-        });*/
-
         return view;//TODO
     }
 

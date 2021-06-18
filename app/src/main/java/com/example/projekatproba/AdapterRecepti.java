@@ -133,14 +133,7 @@ public class AdapterRecepti extends RecyclerView.Adapter<ReceptHolder> {
             }
         });
 
-        receptHolder.ocenite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String s= String.valueOf(receptHolder.ratingBar.getRating());
-                Toast.makeText(ctx.getApplicationContext(), s+"Star", Toast.LENGTH_SHORT).show();
 
-            }
-        });
 
     }
 
@@ -158,7 +151,6 @@ class ReceptHolder extends RecyclerView.ViewHolder{
     Button deleteButt;
     Button updateButt;
     RatingBar ratingBar;
-    Button ocenite;
 
 
     public ReceptHolder(View itemView) {
@@ -170,7 +162,6 @@ class ReceptHolder extends RecyclerView.ViewHolder{
         deleteButt= itemView.findViewById(R.id.obrisi_recept);
         updateButt=itemView.findViewById(R.id.promeni_recept);
         ratingBar=itemView.findViewById(R.id.rating_bar);
-        ocenite=itemView.findViewById(R.id.button_recenzija);
         mCardView= itemView.findViewById(R.id.cardViewRecept);
     }
 }

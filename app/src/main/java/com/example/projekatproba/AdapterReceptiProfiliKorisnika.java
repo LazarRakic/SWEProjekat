@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,20 +24,31 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptProfiliHolder> {
 
     Context ctx;
     List<Recept> receptList;
     FirebaseAuth baseAuth;
+    FirebaseUser user;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
     DocumentReference documentRef;
+    String stringgg, stringgg1;
+    Double lng=5.0;
+    Double lng1=4.0, lng2=10.0;
+    Double konacno;
 
     public AdapterReceptiProfiliKorisnika(Context ctx, List<Recept> receptList) {
         this.ctx = ctx;
@@ -58,9 +71,8 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
         receptProfiliHolder.mTitle.setText(receptList.get(position).getNaziv());
         receptProfiliHolder.mDescription.setText(receptList.get(position).getPriprema());
 
+
         baseAuth= FirebaseAuth.getInstance();
-
-
         receptProfiliHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +85,58 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
                 //   intent.putExtra("Opis", receptList.get(receptHolder.getAdapterPosition()).getPriprema());
                 ctx.startActivity(intent);
                 //    ctx.startActivity(new Intent(ctx, ReceptDetaljActivity.class));
+            }
+        });
+
+        receptProfiliHolder.ocenite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DocumentReference documentReference=docRef.collection("recepti").document(receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta());
+                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                stringgg=document.getString("ocena"); //ocena koja postoji vec u bazi
+                                stringgg1=document.getString("brojmerenja");
+                                String s= String.valueOf(receptProfiliHolder.ratingBar.getRating()); //nova ocena koju daje korisnik
+                                Log.d("TAG:", "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGA " + stringgg);
+                                if(stringgg.equals("")){
+                                    stringgg="0";
+                                    Log.d("TAG:", "DAAAAAAAAAAAAAAAAAA " + document.getData());
+                                }
+                                else
+                                {
+                                    lng=Double.parseDouble(stringgg);
+                                }
+                                if(stringgg1.equals("")){
+                                    stringgg1="0";
+                                }
+                                else
+                                {
+                                    lng1=Double.parseDouble(stringgg1);
+                                    Log.d("TAG:", "DAAAAAAAAAAAAAAAAAA " + document.getData());
+                                }
+
+                                Log.d("TAG:", "BBBBBBBBBBBBBBBBBBBB " + lng.toString());
+                                lng2=Double.parseDouble(s);
+                                Double novo=lng1 +1;
+                                konacno= (lng+ lng2)/novo;
+
+                                receptProfiliHolder.ocena.setText(konacno.toString());
+                                Toast.makeText(ctx, "Vaša ocena je" +konacno.toString()+".", Toast.LENGTH_SHORT).show();
+                                
+
+                                Log.d("TAG:", "DocumentSnapshot data: " + document.getData());
+                            } else {
+                                Log.d("TAG:", "No such document");
+                            }
+                        } else {
+                            Log.d("TAG", "get failed with ", task.getException());
+                        }
+                    }
+                });
             }
         });
 
@@ -89,7 +153,9 @@ class ReceptProfiliHolder extends RecyclerView.ViewHolder{
     ImageView imageView;
     TextView mTitle, mDescription;
     CardView mCardView;
-
+    Button ocenite;
+    TextView ocena;
+    RatingBar ratingBar;
 
     public ReceptProfiliHolder(View itemView) {
         super(itemView);
@@ -97,7 +163,9 @@ class ReceptProfiliHolder extends RecyclerView.ViewHolder{
         imageView= itemView.findViewById(R.id.slikaReceptaProfil);
         mTitle= itemView.findViewById(R.id.nazivReceptaProfil);
         mDescription= itemView.findViewById(R.id.opisReceptaProfil);
-
+        ocenite=itemView.findViewById(R.id.button_recenzija);
+        ocena=itemView.findViewById(R.id.prosecna_recenzija);
+        ratingBar=itemView.findViewById(R.id.rating_bar);
         mCardView= itemView.findViewById(R.id.cardViewReceptProfil);
     }
 }
