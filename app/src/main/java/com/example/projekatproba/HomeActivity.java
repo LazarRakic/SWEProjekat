@@ -128,7 +128,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        //Toast.makeText(HomeActivity.this, "Uspesno! ", Toast.LENGTH_SHORT).show();
                         Log.d("TAG:","MAJKOOOOOOOOOOOOOOOOOOO " + pretraga.getText().toString());
 
                         CollectionReference usersRef= docRef.collection("korisnici");
@@ -142,12 +141,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                 String pom = document.getString("username");
 
-
                                                 if(pom.equals(pretraga.getText().toString()))
                                                 {
-                                                    //startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                                                    //Toast.makeText(HomeActivity.this, "Uspesno uspesno majko :( ! ", Toast.LENGTH_SHORT).show();
-
                                                     ArrayList<String> lista;
                                                     lista=new ArrayList<>();
 
@@ -162,31 +157,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                                     Intent intent=new Intent(HomeActivity.this, ProfileActivity.class);
                                                     intent.putStringArrayListExtra("List", lista);
                                                     startActivity(intent);
-
-
-
-                                                }
-                                                else
-
-                                                    Toast.makeText(HomeActivity.this, "Traženi korisnik ne postoji! ", Toast.LENGTH_SHORT).show();
-
-
+                                              }
                                                 Log.d("TAG","user exist");
-
-
                                             }
-
-
-
-                                        } else {
+                                        }
+                                        else {
                                             Log.d("TAG", "Error getting documents: ", task.getException());
                                         }
-
+                                    if(task.getResult().size()==0){
+                                            Toast.makeText(getBaseContext(), "Traženi korisnik ne postoji! ", Toast.LENGTH_SHORT).show();
+                                    }
                                     }
                                 });
-
-                        //startActivity(new Intent(getApplicationContext(), ProfileFragment.class));
-
                     }
                 });
 
