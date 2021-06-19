@@ -163,12 +163,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         if(userA == true){
-            userProfiles.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
-                }
-            });
 
             adding.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -179,84 +173,80 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         }
         else{
-            userProfiles.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EditText pretraga = new EditText (v.getContext());
-                    AlertDialog.Builder pretragaDijalog = new AlertDialog.Builder(v.getContext());
-                    pretragaDijalog.setTitle("Pretraga profila");
-                    pretragaDijalog.setMessage("Unesite username za profil za koji želite da vršite pretragu");
-                    pretragaDijalog.setView(pretraga);
-
-                    pretragaDijalog.setPositiveButton("Pretraga", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            Log.d("TAG:","MAJKOOOOOOOOOOOOOOOOOOO " + pretraga.getText().toString());
-
-                            CollectionReference usersRef= docRef.collection("korisnici");
-                            Query query=usersRef.whereEqualTo("username",pretraga.getText().toString());
-
-                            query.get()
-                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                                    String pom = document.getString("username");
-
-                                                    if(pom.equals(pretraga.getText().toString()))
-                                                    {
-                                                        ArrayList<String> lista;
-                                                        lista=new ArrayList<>();
-
-                                                        lista.add(document.get("email").toString());
-                                                        lista.add(document.get("name").toString());
-                                                        lista.add(document.get("surname").toString());
-                                                        lista.add(document.get("profileImageUrl").toString());
-                                                        lista.add(document.get("username").toString());
-                                                        lista.add(document.getId());
-
-
-                                                        Intent intent=new Intent(HomeActivity.this, ProfileActivity.class);
-                                                        intent.putStringArrayListExtra("List", lista);
-                                                        startActivity(intent);
-                                                    }
-                                                    Log.d("TAG","user exist");
-                                                }
-                                            }
-                                            else {
-                                                Log.d("TAG", "Error getting documents: ", task.getException());
-                                            }
-                                            if(task.getResult().size()==0){
-                                                Toast.makeText(getBaseContext(), "Traženi korisnik ne postoji! ", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                        }
-                    });
-
-                    pretragaDijalog.setNegativeButton("Odustani", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Toast.makeText(HomeActivity.this, "Neuspesno! ", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    pretragaDijalog.create().show();
-                }
-            });
-
             adding.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(getBaseContext(), DodavanjeRecepataActivity.class));
                 }
             });
-
-
-
         }
 
+        userProfiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText pretraga = new EditText (v.getContext());
+                AlertDialog.Builder pretragaDijalog = new AlertDialog.Builder(v.getContext());
+                pretragaDijalog.setTitle("Pretraga profila");
+                pretragaDijalog.setMessage("Unesite username za profil za koji želite da vršite pretragu");
+                pretragaDijalog.setView(pretraga);
+
+                pretragaDijalog.setPositiveButton("Pretraga", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Log.d("TAG:","MAJKOOOOOOOOOOOOOOOOOOO " + pretraga.getText().toString());
+
+                        CollectionReference usersRef= docRef.collection("korisnici");
+                        Query query=usersRef.whereEqualTo("username",pretraga.getText().toString());
+
+                        query.get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                String pom = document.getString("username");
+
+                                                if(pom.equals(pretraga.getText().toString()))
+                                                {
+                                                    ArrayList<String> lista;
+                                                    lista=new ArrayList<>();
+
+                                                    lista.add(document.get("email").toString());
+                                                    lista.add(document.get("name").toString());
+                                                    lista.add(document.get("surname").toString());
+                                                    lista.add(document.get("profileImageUrl").toString());
+                                                    lista.add(document.get("username").toString());
+                                                    lista.add(document.getId());
+
+
+                                                    Intent intent=new Intent(HomeActivity.this, ProfileActivity.class);
+                                                    intent.putStringArrayListExtra("List", lista);
+                                                    startActivity(intent);
+                                                }
+                                                Log.d("TAG","user exist");
+                                            }
+                                        }
+                                        else {
+                                            Log.d("TAG", "Error getting documents: ", task.getException());
+                                        }
+                                        if(task.getResult().size()==0){
+                                            Toast.makeText(getBaseContext(), "Traženi korisnik ne postoji! ", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                    }
+                });
+
+                pretragaDijalog.setNegativeButton("Odustani", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Toast.makeText(HomeActivity.this, "Neuspesno! ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                pretragaDijalog.create().show();
+            }
+        });
 
         srch.setOnClickListener(new View.OnClickListener() {
             @Override

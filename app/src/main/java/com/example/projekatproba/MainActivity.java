@@ -21,7 +21,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth baseAuth;
+    FirebaseUser user;
     Button posetilac;
+    Boolean userPosetilacMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,33 +38,43 @@ public class MainActivity extends AppCompatActivity {
         relativeLayoutMain.startAnimation(alphaAnimation);
 
         baseAuth= FirebaseAuth.getInstance();
-        FirebaseUser currentUser = baseAuth.getCurrentUser();
+        user=baseAuth.getCurrentUser();
+//        userPosetilacMain=baseAuth.getCurrentUser().isAnonymous();
         posetilac= findViewById(R.id.posetilac);
 
 
-
-        posetilac.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                baseAuth.signInAnonymously()
-                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d("TAG", "signInAnonymously:USPESNO");
-                                    FirebaseUser user = baseAuth.getCurrentUser();
-                                    updateUI(user);
-                                } else {
-                                    Log.w("TAG", "signInAnonymously:neuspesnoooooo", task.getException());
-                                    Toast.makeText(MainActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                    updateUI(null);
+        if(user ==null || user.isAnonymous()==true) {
+            posetilac.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    baseAuth.signInAnonymously()
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d("TAG", "signInAnonymously:USPESNO");
+                                        FirebaseUser user = baseAuth.getCurrentUser();
+                                        updateUI(user);
+                                    } else {
+                                        Log.w("TAG", "signInAnonymously:neuspesnoooooo", task.getException());
+                                        updateUI(null);
+                                    }
                                 }
-                            }
-                        });
-            }
-        });
+                            });
+                }
+            });
+        }
+        else {
+            posetilac.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MainActivity.this, "Već imate svoj nalog. Možete nastaviti kao korisnik.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
     }
 
     public void updateUI(FirebaseUser account){
@@ -79,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onUser(View v) {
 
-        if (baseAuth.getCurrentUser() != null) {
+        if (baseAuth.getCurrentUser() != null && baseAuth.getCurrentUser().isAnonymous()==false) {
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             finish();
         }

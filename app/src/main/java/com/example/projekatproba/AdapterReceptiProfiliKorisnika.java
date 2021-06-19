@@ -48,6 +48,7 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
     List<Recept> receptList;
     FirebaseAuth baseAuth;
     FirebaseUser user;
+    Boolean userPosetilac;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
     DocumentReference documentRef;
 
@@ -81,7 +82,6 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
             receptProfiliHolder.ocena.setText(receptList.get(position).getProsecnaOCENA());
         }
 
-        baseAuth= FirebaseAuth.getInstance();
         receptProfiliHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,64 +94,79 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
             }
         });
 
-        receptProfiliHolder.ocenite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rateValue=receptProfiliHolder.ratingBar.getRating();
-                DocumentReference documentReference=docRef.collection("recepti").document(receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta());
-                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                           DocumentSnapshot document = task.getResult();
-                           if (document.exists()) {
-                               String[] revieweri = document.getString("reviewers").split(",",-1);
-                               String trenutniUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                               if(!document.getString("idPublishera").equals(trenutniUser))
-                               {
-                                   int counter = 0;
-                                   for (int i = 0; i < revieweri.length; i++) {
-                                       if (trenutniUser.equals(revieweri[i])) {
-                                           break;
-                                       }
-                                       counter++;
-                                   }
-                                   if (counter == revieweri.length) {
+        baseAuth= FirebaseAuth.getInstance();
+        userPosetilac=baseAuth.getCurrentUser().isAnonymous();
 
-                                       try{
-                                       float br_merenja = Float.parseFloat(Objects.requireNonNull(document.getString("brojmerenja")));
-                                       float ocena_prosecna = Float.parseFloat(Objects.requireNonNull(document.getString("ocena")));
-                                       br_merenja++;
-                                       float konacna_ocena = (ocena_prosecna + rateValue) / br_merenja;
-                                       float konacna_ocena_dve_decimale = (float) (Math.round(konacna_ocena * 100.0) / 100.0);
-                                       receptProfiliHolder.ocena.setText(String.valueOf(konacna_ocena_dve_decimale));
-                                       String newReviewers =  document.getString("reviewers")+","+trenutniUser;
-                                       updateRecept(konacna_ocena_dve_decimale, br_merenja, receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta(),newReviewers);}
-                                       catch (NullPointerException e){
-                                           Log.d(TAG,e.getMessage());
-                                       }
-                                   } else {
-                                       Toast.makeText(ctx, "Ne mozete ostaviti recenziju vise od jednog puta!", Toast.LENGTH_SHORT).show();
-                                   }
-                               }
-                               else
-                               {
-                                   Toast.makeText(ctx, "Ne mozete ostaviti recenziju za vas recept!", Toast.LENGTH_SHORT).show();
-                               }
+        if(userPosetilac ==true){
+            receptProfiliHolder.ocenite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(ctx, "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else{
+            receptProfiliHolder.ocenite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rateValue=receptProfiliHolder.ratingBar.getRating();
+                    DocumentReference documentReference=docRef.collection("recepti").document(receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta());
+                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    String[] revieweri = document.getString("reviewers").split(",",-1);
+                                    String trenutniUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                    if(!document.getString("idPublishera").equals(trenutniUser))
+                                    {
+                                        int counter = 0;
+                                        for (int i = 0; i < revieweri.length; i++) {
+                                            if (trenutniUser.equals(revieweri[i])) {
+                                                break;
+                                            }
+                                            counter++;
+                                        }
+                                        if (counter == revieweri.length) {
 
-                           }
-                           else {
-                                Log.d("TAG:", "No such document");
+                                            try{
+                                                float br_merenja = Float.parseFloat(Objects.requireNonNull(document.getString("brojmerenja")));
+                                                float ocena_prosecna = Float.parseFloat(Objects.requireNonNull(document.getString("ocena")));
+                                                br_merenja++;
+                                                float konacna_ocena = (ocena_prosecna + rateValue) / br_merenja;
+                                                float konacna_ocena_dve_decimale = (float) (Math.round(konacna_ocena * 100.0) / 100.0);
+                                                receptProfiliHolder.ocena.setText(String.valueOf(konacna_ocena_dve_decimale));
+                                                String newReviewers =  document.getString("reviewers")+","+trenutniUser;
+                                                updateRecept(konacna_ocena_dve_decimale, br_merenja, receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta(),newReviewers);}
+                                            catch (NullPointerException e){
+                                                Log.d(TAG,e.getMessage());
+                                            }
+                                        } else {
+                                            Toast.makeText(ctx, "Ne mozete ostaviti recenziju vise od jednog puta!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(ctx, "Ne mozete ostaviti recenziju za vas recept!", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                                else {
+                                    Log.d("TAG:", "No such document");
+                                }
                             }
-                           }
-                        else
-                        {
-                            Log.d("TAG", "get failed with ", task.getException());
+                            else
+                            {
+                                Log.d("TAG", "get failed with ", task.getException());
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
+
+
 
     }
 
