@@ -3,6 +3,7 @@ package com.example.projekatproba;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,23 +33,26 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptProfiliHolder> {
-
+    public static final String TAG = "AdapterReceptiProfiliKorisnika";
     Context ctx;
     List<Recept> receptList;
     FirebaseAuth baseAuth;
     FirebaseUser user;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
     DocumentReference documentRef;
-    String stringgg, stringgg1;
-    Double lng=5.0;
-    Double lng1=4.0, lng2=10.0;
-    Double konacno;
+
+    float rateValue;
+    String temp;
 
     public AdapterReceptiProfiliKorisnika(Context ctx, List<Recept> receptList) {
         this.ctx = ctx;
@@ -66,11 +70,16 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
     @Override
     public void onBindViewHolder(@NonNull ReceptProfiliHolder receptProfiliHolder, int position) {
 
-
         Picasso.get().load(String.valueOf(receptList.get(position).getSlika())).into( receptProfiliHolder.imageView);
         receptProfiliHolder.mTitle.setText(receptList.get(position).getNaziv());
         receptProfiliHolder.mDescription.setText(receptList.get(position).getPriprema());
-
+        if(receptList.get(position).getProsecnaOCENA().equals("0.0")) {
+            String stringOcena = "OCENA";
+            receptProfiliHolder.ocena.setText(stringOcena);
+        }
+        else{
+            receptProfiliHolder.ocena.setText(receptList.get(position).getProsecnaOCENA());
+        }
 
         baseAuth= FirebaseAuth.getInstance();
         receptProfiliHolder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -81,58 +90,62 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
                 lista.add(receptList.get(receptProfiliHolder.getAdapterPosition()).getSlika());
                 lista.add(receptList.get(receptProfiliHolder.getAdapterPosition()).getPriprema());
                 intent.putStringArrayListExtra("Lista", lista);
-                //   intent.putExtra("Recept2", receptList.get(receptHolder.getAdapterPosition()).getSlika());
-                //   intent.putExtra("Opis", receptList.get(receptHolder.getAdapterPosition()).getPriprema());
                 ctx.startActivity(intent);
-                //    ctx.startActivity(new Intent(ctx, ReceptDetaljActivity.class));
             }
         });
 
         receptProfiliHolder.ocenite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rateValue=receptProfiliHolder.ratingBar.getRating();
                 DocumentReference documentReference=docRef.collection("recepti").document(receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta());
                 documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                stringgg=document.getString("ocena"); //ocena koja postoji vec u bazi
-                                stringgg1=document.getString("brojmerenja");
-                                String s= String.valueOf(receptProfiliHolder.ratingBar.getRating()); //nova ocena koju daje korisnik
-                                Log.d("TAG:", "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGA " + stringgg);
-                                if(stringgg.equals("")){
-                                    stringgg="0";
-                                    Log.d("TAG:", "DAAAAAAAAAAAAAAAAAA " + document.getData());
-                                }
-                                else
-                                {
-                                    lng=Double.parseDouble(stringgg);
-                                }
-                                if(stringgg1.equals("")){
-                                    stringgg1="0";
-                                }
-                                else
-                                {
-                                    lng1=Double.parseDouble(stringgg1);
-                                    Log.d("TAG:", "DAAAAAAAAAAAAAAAAAA " + document.getData());
-                                }
+                           DocumentSnapshot document = task.getResult();
+                           if (document.exists()) {
+                               String[] revieweri = document.getString("reviewers").split(",",-1);
+                               String trenutniUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                               if(!document.getString("idPublishera").equals(trenutniUser))
+                               {
+                                   int counter = 0;
+                                   for (int i = 0; i < revieweri.length; i++) {
+                                       if (trenutniUser.equals(revieweri[i])) {
+                                           break;
+                                       }
+                                       counter++;
+                                   }
+                                   if (counter == revieweri.length) {
 
-                                Log.d("TAG:", "BBBBBBBBBBBBBBBBBBBB " + lng.toString());
-                                lng2=Double.parseDouble(s);
-                                Double novo=lng1 +1;
-                                konacno= (lng+ lng2)/novo;
+                                       try{
+                                       float br_merenja = Float.parseFloat(Objects.requireNonNull(document.getString("brojmerenja")));
+                                       float ocena_prosecna = Float.parseFloat(Objects.requireNonNull(document.getString("ocena")));
+                                       br_merenja++;
+                                       float konacna_ocena = (ocena_prosecna + rateValue) / br_merenja;
+                                       float konacna_ocena_dve_decimale = (float) (Math.round(konacna_ocena * 100.0) / 100.0);
+                                       receptProfiliHolder.ocena.setText(String.valueOf(konacna_ocena_dve_decimale));
+                                       String newReviewers =  document.getString("reviewers")+","+trenutniUser;
+                                       updateRecept(konacna_ocena_dve_decimale, br_merenja, receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta(),newReviewers);}
+                                       catch (NullPointerException e){
+                                           Log.d(TAG,e.getMessage());
+                                       }
+                                   } else {
+                                       Toast.makeText(ctx, "Ne mozete ostaviti recenziju vise od jednog puta!", Toast.LENGTH_SHORT).show();
+                                   }
+                               }
+                               else
+                               {
+                                   Toast.makeText(ctx, "Ne mozete ostaviti recenziju za vas recept!", Toast.LENGTH_SHORT).show();
+                               }
 
-                                receptProfiliHolder.ocena.setText(konacno.toString());
-                                Toast.makeText(ctx, "Vaša ocena je" +konacno.toString()+".", Toast.LENGTH_SHORT).show();
-                                
-
-                                Log.d("TAG:", "DocumentSnapshot data: " + document.getData());
-                            } else {
+                           }
+                           else {
                                 Log.d("TAG:", "No such document");
                             }
-                        } else {
+                           }
+                        else
+                        {
                             Log.d("TAG", "get failed with ", task.getException());
                         }
                     }
@@ -146,8 +159,30 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
     public int getItemCount() {
         return receptList.size();
     }
+
+
+    public void updateRecept(float konacna_ocena,float br_merenja,String document,String newReviewers)
+    {
+        DocumentReference receptiUpdate = docRef.collection("recepti").document(document);
+
+        receptiUpdate
+                .update("ocena", String.valueOf(konacna_ocena),"brojmerenja",String.valueOf(br_merenja),"reviewers",newReviewers)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
+    }
+
 }
-//Ovo se menja :D
+
 class ReceptProfiliHolder extends RecyclerView.ViewHolder{
 
     ImageView imageView;

@@ -10,8 +10,9 @@ public class Recept {
     private Long datum;
     private String idKorisnika;
     private String slika;
+    private String prosecnaOCENA;
 
-    public Recept(String idRecepta, String naziv, String priprema, String sastojci, Long datum, String idKorisnika, String slika) {
+    public Recept(String idRecepta, String naziv, String priprema, String sastojci, Long datum, String idKorisnika, String slika,String prosecnaOCENA) {
         this.idRecepta= idRecepta;
         this.naziv = naziv;
         this.priprema = priprema;
@@ -19,6 +20,7 @@ public class Recept {
         this.datum = datum;
         this.idKorisnika= idKorisnika;
         this.slika= slika;
+        this.prosecnaOCENA=prosecnaOCENA;
     }
 
     public String getIdRecepta() {return idRecepta;}
@@ -71,5 +73,13 @@ public class Recept {
 
     public void setSlika(String slika) {
         this.slika = slika;
+    }
+
+    public String getProsecnaOCENA() {
+        return prosecnaOCENA;
+    }
+
+    public void setProsecnaOCENA(String prosecnaOCENA) {
+        this.prosecnaOCENA = prosecnaOCENA;
     }
 }

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,11 +26,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,14 +37,13 @@ import com.google.firebase.storage.StorageTask;
 import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class DodavanjeRecepataActivity extends AppCompatActivity {
     int idDokumenta=2;
-    double nula=0.0;
+    double nula= 0.0;
     Button prikazi;
     Button objavi;
     ImageView slika;
@@ -125,6 +120,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                 dataToSave.put("ocena",Double.toString(nula));
                 dataToSave.put("priprema",priprema.getText().toString());
                 dataToSave.put("sastojci",sastojci.getText().toString());
+                dataToSave.put("reviewers","");
                 //napravimo i da moze bez prikaza liste sastojaka da nam se sastojci ucitavaju (samo oni na koje je kliknuto)
                 docRef.collection("recepti").document(Integer.toString(idDokumenta)).set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
