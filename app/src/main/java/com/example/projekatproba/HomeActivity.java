@@ -7,15 +7,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +57,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ImageView userProfiles;
     ImageView adding;
     Boolean userA;
+    RecyclerView recyclerView;
+    List<Recept> receptList;
+    Recept recept;
+    RatingBar ratingBar;
+    Button ocenite;
+    AdapterReceptiProfiliKorisnika adapterReceptiProfiliKorisnika;
+    String userIdValue;
 
     List<String> datum;
     List<String> mail;
@@ -77,9 +88,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         userA=baseAuth.getCurrentUser().isAnonymous();
         adding= findViewById(R.id.add);
 
+        recyclerView= findViewById(R.id.dataListRHome);
+        receptList=new ArrayList<>();
+        ratingBar=findViewById(R.id.rating_bar);
+        ocenite=findViewById(R.id.button_recenzija);
+        userIdValue=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Context ctx = this;
+
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        CollectionReference receptRef= docRef.collection("recepti");
+        receptRef.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                GridLayoutManager gridLayoutManager= new GridLayoutManager(ctx, 1);
+                                recyclerView.setLayoutManager(gridLayoutManager);
+
+                                recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"));
+                                Log.d("TAG", "onComplete:"+recept.getNaziv());
+                                receptList.add(recept);
+                                adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(ctx, receptList);
+                                recyclerView.setAdapter(adapterReceptiProfiliKorisnika);
+
+
+                            }
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
