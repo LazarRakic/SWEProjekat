@@ -19,7 +19,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <ImageView
-            android:id="@+id/home_dugme_dodavanje_recepata"
+            android:id="@+id/dugme_na_search_aktiviti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/reply_icon" />

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +33,7 @@ public class SearchActivityResult extends AppCompatActivity {
     List<Recept> novaListaRecepata;
     AdapterReceptiProfiliKorisnika adapterReceptiProfiliKorisnika;
     ImageView slikaNemaRecepta;
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +47,16 @@ public class SearchActivityResult extends AppCompatActivity {
         recyclerView=findViewById(R.id.pretragaRecepti);
         slikaNemaRecepta=findViewById(R.id.nemaRecepta);
         slikaNemaRecepta.setVisibility(View.INVISIBLE);
+        back=findViewById(R.id.dugme_na_search_aktiviti);
 
         Log.d("TAG","Svi sastojci koji smo preneli na novi activity"+sastojci);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(), SearchActivity.class));
+            }
+        });
 
         CollectionReference receptRef= docRef.collection("recepti");
         receptRef.get()
