@@ -29,7 +29,7 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     List<Recept> receptList;
     AdapterReceptiProfiliKorisnika adapterReceptiProfiliKorisnika;
-
+    List<Recept> novaSortiranaLista ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
 
         recyclerView= view.findViewById(R.id.receptiNaHome);
         receptList=new ArrayList<>();
-
+        novaSortiranaLista = new ArrayList<>();
 
 
         CollectionReference receptRef= docRef.collection("recepti");
@@ -47,18 +47,44 @@ public class HomeFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                  recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"));
+                                  receptList.add(recept);
+//
+//                                GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 1);
+//                                recyclerView.setLayoutManager(gridLayoutManager);
+//
+//                                recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"));
+//                                Log.d("TAG", "onComplete:"+recept.getNaziv());
+//                                receptList.add(recept);
+//                                adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(getContext(), receptList);
+//                                recyclerView.setAdapter(adapterReceptiProfiliKorisnika);
+                            }
+                            Recept receptiArray[] = new Recept[receptList.size()];
 
-                                GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 1);
-                                recyclerView.setLayoutManager(gridLayoutManager);
+                            for(int i=0;i<receptList.size();i++)
+                            {
+                                receptiArray[i]=receptList.get(i);
+                                Log.d("TAG","NIZ Lista item "+receptList.get(i).getProsecnaOCENA());
+                            }
+                            sort(receptiArray);
 
-                                recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"));
-                                Log.d("TAG", "onComplete:"+recept.getNaziv());
-                                receptList.add(recept);
-                                adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(getContext(), receptList);
-                                recyclerView.setAdapter(adapterReceptiProfiliKorisnika);
-
+                            int counter = 0;
+                            for (int i = receptiArray.length-1; i > 0;i--) {
+                                if(counter<10) {
+                                novaSortiranaLista.add(receptiArray[i]);
+                                counter++;
+                                }
+                                else{
+                                    break;
+                                }
 
                             }
+
+                            GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 1);
+                            recyclerView.setLayoutManager(gridLayoutManager);
+                            adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(getContext(), novaSortiranaLista);
+                            //adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(getContext(), receptList);
+                            recyclerView.setAdapter(adapterReceptiProfiliKorisnika);
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
@@ -69,4 +95,30 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
+    void sort(Recept recepti[])
+    {
+        int n = recepti.length;
+
+        for (int i = 0; i < n-1; i++)
+        {
+            int min_idx = i;
+            for (int j = i+1; j < n; j++)
+              if(!recepti[j].getProsecnaOCENA().equals(recepti[min_idx].getProsecnaOCENA())) {
+                  if (Float.parseFloat(recepti[j].getProsecnaOCENA()) < Float.parseFloat(recepti[min_idx].getProsecnaOCENA()))
+                      min_idx = j;
+              }
+              else
+              {
+                  if (recepti[j].getDatum() <recepti[min_idx].getDatum())
+                      min_idx = j;
+              }
+
+            Recept temp = recepti[min_idx];
+            recepti[min_idx] = recepti[i];
+            recepti[i] = temp;
+        }
+    }
+
+
 }
