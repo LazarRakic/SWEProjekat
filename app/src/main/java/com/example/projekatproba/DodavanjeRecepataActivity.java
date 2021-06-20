@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -87,7 +88,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
         images= new ArrayList<>();
         this.selektovaniSastojci=new ArrayList<String>();
 
-        docRef.collection("recepti")
+       /** docRef.collection("recepti")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -108,7 +109,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                     }
 
 
-                });
+                });*/
 
         objavi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,16 +125,16 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                 dataToSave.put("sastojci",sastojci.getText().toString());
                 dataToSave.put("reviewers","");
                 //napravimo i da moze bez prikaza liste sastojaka da nam se sastojci ucitavaju (samo oni na koje je kliknuto)
-                docRef.collection("recepti").document(Integer.toString(idDokumenta)).set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+                //document(Integer.toString(idDokumenta))
+                docRef.collection("recepti").add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void avoid) {
+                    public void onSuccess(DocumentReference documentReference) {
                         Log.d("TAG", "Recept  je sačuvan! ");
                         Toast.makeText(DodavanjeRecepataActivity.this, "Recept je uspesno dodat ", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         //intent da predje na home activiti
                         //i dodaj toast
 
-                        idDokumenta++;
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {

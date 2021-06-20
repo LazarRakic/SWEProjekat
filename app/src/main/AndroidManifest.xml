@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjekatProba.NoActionBar">
-        <activity android:name=".ReceptDetaljActivity"></activity>
+        <activity android:name=".SearchActivityResult"></activity>
+        <activity android:name=".ReceptDetaljActivity" />
         <activity android:name=".PromenaRecepataActivity" />
         <activity android:name=".DodavanjeRecepataActivity" />
         <activity android:name=".ChangePasswordActivity" />

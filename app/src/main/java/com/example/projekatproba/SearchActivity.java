@@ -93,6 +93,14 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
               //TODO PRETRAGA
+                String s="";
+                for(String s1 : adapterSastojci.nizSelektovanih)
+                {
+                    s+=s1+",";
+                }
+                Intent intent = new Intent(getBaseContext(), SearchActivityResult.class);
+                intent.putExtra("SASTOJCI",s);
+                startActivity(intent);
             }
         });
 
