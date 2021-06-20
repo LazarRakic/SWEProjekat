@@ -25,7 +25,8 @@
                 android:id="@+id/slikaReceptaProfil"
                 android:layout_weight="4"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"/>
+                android:src="@drawable/zarecepte"
+                android:padding="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,6 +39,7 @@
                     android:layout_width="243dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:layout_marginRight="50dp"
                     android:orientation="vertical"
                     android:padding="10dp">
 
@@ -68,10 +70,12 @@
                     android:textAlignment="center"
                     android:maxLines="1"
                     android:text="ocena"
+                    android:layout_marginLeft="60dp"
                     android:textColor="@color/white"
                     android:background="@color/purple_500"
-                    android:textSize="28sp"
+                    android:textSize="26sp"
                     android:layout_marginRight="10dp"
+
                     android:layout_marginTop="10dp"/>
             </LinearLayout>
 
@@ -94,7 +98,8 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:text="ocenite"
-                    android:layout_marginRight="-10dp"/>
+                    android:backgroundTint="@color/purple_500"
+                    android:layout_marginRight="10dp"/>
 
             </LinearLayout>
         </LinearLayout>

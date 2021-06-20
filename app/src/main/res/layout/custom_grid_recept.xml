@@ -66,22 +66,23 @@
 
                     <Button
                         android:id="@+id/obrisi_recept"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="5dp"
                         android:maxWidth="1dp"
-                        android:text="X"
+                        android:background="@drawable/delete_recipe_icon"
                         android:textSize="15dp"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="10dp"/>
 
                     <Button
                         android:id="@+id/promeni_recept"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/change_recipe_icon"
                         android:textSize="20dp"
-                        android:text="+" />
+                        android:layout_marginTop="10dp" />
                 </LinearLayout>
             </LinearLayout>
 

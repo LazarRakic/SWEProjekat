@@ -30,6 +30,7 @@ import java.util.List;
 public class ProfileActivity extends AppCompatActivity {
 
     TextView username;
+    ImageView home;
     TextView email;
     ImageView profileImage;
     RecyclerView recyclerView;
@@ -52,6 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
         ArrayList<String> profileLista=getIntent().getExtras().getStringArrayList("List");
         recyclerView = findViewById(R.id.dataListR);
         username=findViewById(R.id.userName);
+        home=findViewById(R.id.home_dugme_profili_korisnika);
         email=findViewById(R.id.eMail);
         profileImage=findViewById(R.id.profile_image);
         receptList=new ArrayList<>();
@@ -61,6 +63,13 @@ public class ProfileActivity extends AppCompatActivity {
         ratingBar=findViewById(R.id.rating_bar);
         ocenite=findViewById(R.id.button_recenzija);
         Picasso.get().load(profileLista.get(3)).into(profileImage);
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
 
 
         CollectionReference receptRef= docRef.collection("recepti");

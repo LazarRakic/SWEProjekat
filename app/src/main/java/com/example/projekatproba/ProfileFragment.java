@@ -58,7 +58,7 @@ public class ProfileFragment extends Fragment {
     ImageView image;
     Button dodajRecept;
     Button promeniRecept;
-    ImageView changeProfilePicture;
+    Button changeProfilePicture;
     String imageUrl;
     Uri imageUri;
     TextView username;

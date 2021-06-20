@@ -47,6 +47,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
     Button prikazi;
     Button objavi;
     ImageView slika;
+    ImageView home;
     EditText priprema;
     EditText naziv;
     TextView sastojci;
@@ -79,6 +80,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
         sastojci = findViewById(R.id.sastojciPlanText);
         storage= FirebaseStorage.getInstance().getReference();
         dataList= findViewById(R.id.listaSastojaka);
+        home=findViewById(R.id.home_dugme_dodavanje_recepata);
 
 
         titles= new ArrayList<>();
@@ -143,6 +145,14 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                 });
             }
         });
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
+
         prikazi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -128,6 +128,22 @@ public class AdapterRecepti extends RecyclerView.Adapter<ReceptHolder> {
                 ArrayList<String> lista= new ArrayList<>();
                 lista.add(receptList.get(receptHolder.getAdapterPosition()).getSlika());
                 lista.add(receptList.get(receptHolder.getAdapterPosition()).getPriprema());
+                lista.add(receptList.get(receptHolder.getAdapterPosition()).getSastojci());
+                intent.putStringArrayListExtra("Lista", lista);
+                ctx.startActivity(intent);
+            }
+        });
+
+        receptHolder.updateButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(ctx, PromenaRecepataActivity.class);
+                ArrayList<String> lista= new ArrayList<>();
+                lista.add(receptList.get(receptHolder.getAdapterPosition()).getSlika());
+                lista.add(receptList.get(receptHolder.getAdapterPosition()).getPriprema());
+                lista.add(receptList.get(receptHolder.getAdapterPosition()).getSastojci());
+                lista.add(receptList.get(receptHolder.getAdapterPosition()).getNaziv());
+                lista.add(receptList.get(receptHolder.getAdapterPosition()).getIdRecepta());
                 intent.putStringArrayListExtra("Lista", lista);
                 ctx.startActivity(intent);
             }

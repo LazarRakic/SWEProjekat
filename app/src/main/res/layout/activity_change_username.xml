@@ -11,10 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textColor="@color/black"
         android:text="Unesite novo korisničko ime:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="60dp"/>
 
     <EditText
         android:id="@+id/editTextNewUsername"
@@ -51,12 +53,14 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonDiscard"
         app:layout_constraintHorizontal_bias="0.913"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/editTextNewUsername" />
 
     <Button
         android:id="@+id/buttonDiscard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="88dp"
         android:text="odbaci"

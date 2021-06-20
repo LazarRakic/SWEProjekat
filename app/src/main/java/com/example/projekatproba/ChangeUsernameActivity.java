@@ -44,7 +44,8 @@ public class ChangeUsernameActivity extends AppCompatActivity {
 
         discard= findViewById(R.id.buttonDiscard);
         newPassword=findViewById(R.id.editTextNewPassword);
-  		save= findViewById(R.id.buttonSave);        newUsername= findViewById(R.id.editTextNewUsername);
+  		save= findViewById(R.id.buttonSave);
+  		newUsername= findViewById(R.id.editTextNewUsername);
         baseAuth= FirebaseAuth.getInstance();
         bar= findViewById(R.id.progressBar3);
 
@@ -57,7 +58,8 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                 Query query=usersRef.whereEqualTo("username",userName);
                 DocumentReference documentReference= docRef.collection("korisnici").document(baseAuth.getInstance().getCurrentUser().getUid());
 
- 				if (TextUtils.isEmpty(userName)) {                    newUsername.setError("Polje za korisničko ime ne sme biti prazno!");
+ 				if (TextUtils.isEmpty(userName)) {
+ 				    newUsername.setError("Polje za korisničko ime ne sme biti prazno!");
                     return;
                 }
 

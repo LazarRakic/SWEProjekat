@@ -2,6 +2,7 @@
 <resources>
     <color name="beige">#FFF7AC</color>
     <color name="maloBeige">#FFFACD</color>
+    <color name="teget">#081FA5</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#2196F3</color>
