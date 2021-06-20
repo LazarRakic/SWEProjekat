@@ -6,15 +6,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/reply_icon"
+            android:icon="@drawable/home_page_icon"
             android:title="Početna strana" />
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/reply_icon"
+            android:icon="@drawable/profile_user_icon"
             android:title="Vaš profil" />
         <item
             android:id="@+id/nav_notifications"
-            android:icon="@drawable/reply_icon"
+            android:icon="@drawable/notifications_icon"
             android:title="Notifikacije" />
         <item
             android:id="@+id/nav_settings"
@@ -23,24 +23,24 @@
             <menu>
                 <item
                     android:id="@+id/nav_settings_username"
-                    android:icon="@drawable/reply_icon"
+                    android:icon="@drawable/change_username_icon"
                     android:title="Korisničko ime" />
                 <item
                     android:id="@+id/nav_settings_password"
-                    android:icon="@drawable/reply_icon"
+                    android:icon="@drawable/change_password_icon"
                     android:title="Lozinka" />
                 <item
                     android:id="@+id/nav_settings_delete_account"
-                    android:icon="@drawable/reply_icon"
+                    android:icon="@drawable/delete_account_icon"
                     android:title="Brisanje naloga" />
             </menu>
         </item>
     </group>
-    <item android:title="Odjaviti se" >
+    <item android:title="Odjavti se" >
         <menu>
             <item android:id="@+id/nav_logout"
                 android:title="Odjavljivanje"
-                android:icon="@drawable/reply_icon"/>
+                android:icon="@drawable/logout_icon"/>
         </menu>
     </item>
 

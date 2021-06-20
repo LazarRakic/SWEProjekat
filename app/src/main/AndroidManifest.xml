@@ -10,14 +10,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ProjekatProba">
+        android:theme="@style/Theme.ProjekatProba.NoActionBar">
         <activity android:name=".ReceptDetaljActivity"></activity>
         <activity android:name=".PromenaRecepataActivity" />
         <activity android:name=".DodavanjeRecepataActivity" />
         <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".ChangeProfileDataActivity" />
-        <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".DeleteAccountActivity" />
         <activity android:name=".ChangeUsernameActivity" />
         <activity
