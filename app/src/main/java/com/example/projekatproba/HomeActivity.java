@@ -57,12 +57,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ImageView userProfiles;
     ImageView adding;
     Boolean userA;
-    RecyclerView recyclerView;
-    List<Recept> receptList;
-    Recept recept;
     RatingBar ratingBar;
     Button ocenite;
-    AdapterReceptiProfiliKorisnika adapterReceptiProfiliKorisnika;
     String userIdValue;
 
     List<String> datum;
@@ -88,8 +84,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         userA=baseAuth.getCurrentUser().isAnonymous();
         adding= findViewById(R.id.add);
 
-        recyclerView= findViewById(R.id.dataListRHome);
-        receptList=new ArrayList<>();
+
         ratingBar=findViewById(R.id.rating_bar);
         ocenite=findViewById(R.id.button_recenzija);
         userIdValue=FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -98,32 +93,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        CollectionReference receptRef= docRef.collection("recepti");
-        receptRef.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                GridLayoutManager gridLayoutManager= new GridLayoutManager(ctx, 1);
-                                recyclerView.setLayoutManager(gridLayoutManager);
-
-                                recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"));
-                                Log.d("TAG", "onComplete:"+recept.getNaziv());
-                                receptList.add(recept);
-                                adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(ctx, receptList);
-                                recyclerView.setAdapter(adapterReceptiProfiliKorisnika);
-
-
-                            }
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -311,10 +280,42 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_logout:
+
                 if(userA == true){
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    finish();
+                    FirebaseUser user;
+                    user=baseAuth.getCurrentUser();
+                    user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+
+                                docRef.collection("korisnici").document(user.getUid().toString())
+                                        .delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("TAG", "DocumentSnapshot successfully deleted!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("TAG", "Error deleting documentAAAAAAAAAAAAAAAAAAAAAAAAA", e);
+                                            }
+                                        });
+
+                                Toast.makeText(getApplicationContext(), "Uspešno ste odjavljeni.", Toast.LENGTH_LONG).show();
+                                FirebaseAuth.getInstance().signOut();
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                finish();
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "Greška prilikom odjavljivanja." + user.getUid(), Toast.LENGTH_LONG).show();
+                                Log.w("TAG", "Error deleting documentAAAAAAAAAAAAAAAAAAAAAAAAA");
+                            }
+                        }
+                    });
+
                 }
                 else{
                     FirebaseAuth.getInstance().signOut();
