@@ -4,6 +4,7 @@ public class Sastojak {
 
     private String ime;
     private String urlSlike;
+    private boolean kliknut;
 
     public Sastojak() {
     }
@@ -11,6 +12,15 @@ public class Sastojak {
     public Sastojak(String ime, String urlSlike) {
         this.ime = ime;
         this.urlSlike = urlSlike;
+        this.kliknut=false;
+    }
+
+    public boolean isKliknut() {
+        return kliknut;
+    }
+
+    public void setKliknut(boolean kliknut) {
+        this.kliknut = kliknut;
     }
 
     public String getIme() {

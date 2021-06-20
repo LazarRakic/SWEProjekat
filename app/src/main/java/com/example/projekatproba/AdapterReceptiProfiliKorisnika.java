@@ -86,6 +86,7 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(ctx, ReceptDetaljActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ArrayList<String> lista= new ArrayList<>();
                 lista.add(receptList.get(receptProfiliHolder.getAdapterPosition()).getSlika());
                 lista.add(receptList.get(receptProfiliHolder.getAdapterPosition()).getPriprema());

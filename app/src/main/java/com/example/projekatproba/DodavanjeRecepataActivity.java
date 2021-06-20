@@ -61,10 +61,11 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
     RecyclerView dataList;
     List<String> titles;
     List<String> images;
-    Adapter adapter;
+    AdapterSastojci adapterSastojci;
     String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
     TimeUtility timeUtility;
     LocalDateTime now ;
+    List<Sastojak> sastojakList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +88,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
         titles= new ArrayList<>();
         images= new ArrayList<>();
         this.selektovaniSastojci=new ArrayList<String>();
+        sastojakList = new ArrayList<Sastojak>();
 
        /** docRef.collection("recepti")
                 .get()
@@ -158,7 +160,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String s="";
-                for(String s1 : adapter.nizSelektovanih)
+                for(String s1 : adapterSastojci.nizSelektovanih)
                 {
                     s+=s1+",";
                 }
@@ -181,19 +183,17 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
+                                Sastojak sastojak = new Sastojak(document.get("naziv").toString(),document.get("sImgUrl").toString());
 
-                                titles.add(document.get("naziv").toString());
-                                images.add(document.get("sImgUrl").toString());
-
-
-                                Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
+                                sastojakList.add(sastojak);
                             }
 
-                            Log.d("TAG", titles.toString() + " => " + images.toString());
-                            adapter = new Adapter(sada, titles, images);
+                            Sastojak[] nizSastojak = new Sastojak[sastojakList.size()];
+                            sastojakList.toArray(nizSastojak);
+                            adapterSastojci =new AdapterSastojci(nizSastojak);
                             GridLayoutManager gridLayoutManager = new GridLayoutManager(DodavanjeRecepataActivity.this, 4, GridLayoutManager.VERTICAL, false);
                             dataList.setLayoutManager(gridLayoutManager);
-                            dataList.setAdapter(adapter);
+                            dataList.setAdapter(adapterSastojci);
 
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
@@ -207,7 +207,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
         dataList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selektovaniSastojci=adapter.nizSelektovanih;
+                selektovaniSastojci=adapterSastojci.nizSelektovanih;
                 Log.d("NIZARA NIZARA ALE ALE",selektovaniSastojci.toString());
                 sastojci.setText(selektovaniSastojci.toString());
             }

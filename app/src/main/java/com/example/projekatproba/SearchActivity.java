@@ -14,18 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +27,14 @@ public class SearchActivity extends AppCompatActivity {
     List<String> selektovaniSastojci;
     RecyclerView dataList;
     List<Sastojak> sastojakList;
-    AdapterSastojci adapterSastojci;
+    //AdapterSastojci adapterSastojci;
     ImageView home;
     TextView pretrazi;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
+    List<String> titles;
+    List<String> images;
+    //Adapter adapter;
+    AdapterSastojci adapterSastojci;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +46,9 @@ public class SearchActivity extends AppCompatActivity {
         dataList= findViewById(R.id.dataList);
         this.sastojakList=new ArrayList<Sastojak>();
         this.selektovaniSastojci=new ArrayList<String>();
+
+        titles=new ArrayList<>();
+        images=new ArrayList<>();
 
         pretrazi = findViewById(R.id.pretraziPoSastojcima);
 
@@ -65,15 +64,23 @@ public class SearchActivity extends AppCompatActivity {
                                 Sastojak sastojak = new Sastojak(document.get("naziv").toString(),document.get("sImgUrl").toString());
 
                                 sastojakList.add(sastojak);
+                                titles.add(document.getString("naziv"));
+                                images.add(document.get("sImgUrl").toString());
 
 
                                 Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
                             }
                             sastojakList.forEach(e ->Log.d("TAG","Sastojak"+e.getIme()) );
-                            adapterSastojci = new AdapterSastojci(sada, sastojakList);
+                            //adapterSastojci = new AdapterSastojci(sada, sastojakList);
+                            //adapter=new Adapter(sada,titles,images);
+                            //adapterSastojci = new AdapterSastojci(sada,sastojakList);
+                            Sastojak[] nizSastojak = new Sastojak[sastojakList.size()];
+                            sastojakList.toArray(nizSastojak);
+                            adapterSastojci =new AdapterSastojci(nizSastojak);
                             GridLayoutManager gridLayoutManager = new GridLayoutManager(sada, 4, GridLayoutManager.VERTICAL, false);
                             dataList.setLayoutManager(gridLayoutManager);
                             dataList.setAdapter(adapterSastojci);
+                            Log.d("TAG", "onComplete: " + "KURAC");
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }

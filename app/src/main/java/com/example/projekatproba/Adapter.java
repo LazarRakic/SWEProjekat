@@ -32,6 +32,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     LayoutInflater inflater;
     List<String> nizSelektovanih;
     TextView textView;
+    String s="";
 
     public Adapter(Context ctx, List<String> titles, List<String> images ){
         this.titles=titles;
@@ -82,21 +83,25 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             title= itemView.findViewById(R.id.textView2);
             gridIcon= itemView.findViewById(R.id.imageView2);
 
+//            for(String pom : nizSelektovanih){
+//                s+=pom;
+//            }
+
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
 
                     Pattern p=Pattern.compile(title.getText().toString());
-                    String s="";
-                    for(String pom : nizSelektovanih){
-                        s+=pom;
-                    }
+
                     Matcher m=p.matcher(s);
                     if(!m.find()) {
                         nizSelektovanih.add(title.getText().toString());
                         view.findViewById(R.id.constraintLayout2).setBackgroundColor(Color.parseColor("#008000"));
                         Log.d("TITLE SASTOJKA", title.getText().toString());
                         Log.d("NIZ SELEKTOVANIH", nizSelektovanih.toString());
+                        s+=title.getText().toString();
+                        Log.d("TAG", "STRING ALEK ALEK "+s);
+
                     }
                     else{
                         for(int i=0;i<nizSelektovanih.size();i++ ){

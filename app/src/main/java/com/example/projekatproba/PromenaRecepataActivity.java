@@ -52,12 +52,12 @@ public class PromenaRecepataActivity extends AppCompatActivity {
     FirebaseAuth baseAuth;
     TextView sastojci;
     FirebaseFirestore docRef= FirebaseFirestore.getInstance();
-    Adapter adapter;
+    AdapterSastojci adapterSastojci;
     List<String> titles;
     List<String> images;
     RecyclerView dataList;
     String idRecepta;
-
+    List<Sastojak> sastojakList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +75,9 @@ public class PromenaRecepataActivity extends AppCompatActivity {
         images= new ArrayList<>();
         dataList= findViewById(R.id.listaSastojakaPromenaRecepta);
         baseAuth= FirebaseAuth.getInstance();
+
+
+        sastojakList = new ArrayList<Sastojak>();
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +98,7 @@ public class PromenaRecepataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String s="";
-                for(String s1 : adapter.nizSelektovanih)
+                for(String s1 : adapterSastojci.nizSelektovanih)
                 {
                     s+=s1+",";
                 }
@@ -112,22 +115,35 @@ public class PromenaRecepataActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                titles.add(document.get("naziv").toString());
-                                images.add(document.get("sImgUrl").toString());
-                                Log.d("TAG", document.get("naziv") + " => " + document.get("sImgUrl"));
+                                Sastojak sastojak = new Sastojak(document.get("naziv").toString(),document.get("sImgUrl").toString());
+
+                                sastojakList.add(sastojak);
                             }
 
                             String[] array=sastojci.getText().toString().split(",",0);
                             List<String> lista= Arrays.asList(array);
                             List<String> lista1= new ArrayList<>(lista);
+                            Log.d("TAG", "lista1 "+lista1);
 
-                            Log.d("TAG", titles.toString() + " => " + images.toString());
-                            adapter = new Adapter(sada, titles, images);
-                            adapter.nizSelektovanih=lista1;
-                            Log.d("TAG", "onComplete: NIFABIFHBWEIHFBWHIR" + adapter.nizSelektovanih);
+                            Sastojak[] nizSastojak = new Sastojak[sastojakList.size()];
+                            sastojakList.toArray(nizSastojak);
+                            List<Sastojak> nizSelektovanihSastojaka = new ArrayList<Sastojak>();
+                            for (Sastojak sastojak : nizSastojak) {
+
+                                if (lista1.contains(sastojak.getIme())) {
+                                    nizSelektovanihSastojaka.add(sastojak);
+                                }
+                            }
+
+                            adapterSastojci =new AdapterSastojci(nizSastojak,lista1,nizSelektovanihSastojaka);
+                            Log.d("TAG", "onComplete: NIFABIFHBWEIHFBWHIR" + adapterSastojci.nizSelektovanih);
+
+                            Log.d("TAG", "onComplete:SASTOJCI SASTOJCI " + adapterSastojci.getSelectedSastojci());
+
+
                             GridLayoutManager gridLayoutManager = new GridLayoutManager(PromenaRecepataActivity.this, 4, GridLayoutManager.VERTICAL, false);
                             dataList.setLayoutManager(gridLayoutManager);
-                            dataList.setAdapter(adapter);
+                            dataList.setAdapter(adapterSastojci);
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
@@ -155,7 +171,7 @@ public class PromenaRecepataActivity extends AppCompatActivity {
 
     public void izmeniPodatkeRecepta(){
         String ss="";
-        for(String s1 : adapter.nizSelektovanih)
+        for(String s1 : adapterSastojci.nizSelektovanih)
         {
             ss+=s1+",";
         }
@@ -223,6 +239,7 @@ public class PromenaRecepataActivity extends AppCompatActivity {
 
         });
     }
+
 
 
 
