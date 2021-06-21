@@ -92,6 +92,7 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
                 lista.add(receptList.get(receptProfiliHolder.getAdapterPosition()).getPriprema());
                 lista.add(receptList.get(receptProfiliHolder.getAdapterPosition()).getSastojci());
                 lista.add(receptList.get(receptProfiliHolder.getAdapterPosition()).getNaziv());
+                lista.add(receptList.get(receptProfiliHolder.getAdapterPosition()).getUsernameKorisnika());
                 intent.putStringArrayListExtra("Lista", lista);
                 ctx.startActivity(intent);
             }

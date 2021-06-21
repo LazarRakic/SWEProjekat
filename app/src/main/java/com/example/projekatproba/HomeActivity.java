@@ -145,7 +145,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             adding.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getBaseContext(), DodavanjeRecepataActivity.class));
+                    ArrayList<String> lista;
+                    lista=new ArrayList<>();
+
+                    lista.add(username.getText().toString());
+
+
+                    Intent intent=new Intent(HomeActivity.this, DodavanjeRecepataActivity.class);
+                    intent.putStringArrayListExtra("List", lista);
+                    startActivity(intent);
+                   // startActivity(new Intent(getBaseContext(), DodavanjeRecepataActivity.class));
                 }
             });
         }

@@ -85,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     GridLayoutManager gridLayoutManager= new GridLayoutManager(ctx, 1);
                                     recyclerView.setLayoutManager(gridLayoutManager);
 
-                                    recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"));
+                                    recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"),document.getString("usernameKorisnika"));
                                     receptList.add(recept);
                                     adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(ctx, receptList);
                                     recyclerView.setAdapter(adapterReceptiProfiliKorisnika);

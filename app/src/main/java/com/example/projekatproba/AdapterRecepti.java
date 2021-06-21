@@ -130,6 +130,7 @@ public class AdapterRecepti extends RecyclerView.Adapter<ReceptHolder> {
                 lista.add(receptList.get(receptHolder.getAdapterPosition()).getPriprema());
                 lista.add(receptList.get(receptHolder.getAdapterPosition()).getSastojci());
                 lista.add(receptList.get(receptHolder.getAdapterPosition()).getNaziv());
+                lista.add(receptList.get(receptHolder.getAdapterPosition()).getUsernameKorisnika());
                 intent.putStringArrayListExtra("Lista", lista);
                 ctx.startActivity(intent);
             }

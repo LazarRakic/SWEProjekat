@@ -135,7 +135,7 @@ public class ProfileFragment extends Fragment {
                                     GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 1);
                                     recyclerView.setLayoutManager(gridLayoutManager);
 
-                                    recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"));
+                                    recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"),document.getString("usernameKorisnika"));
                                     receptList.add(recept);
                                     adapterRecepti= new AdapterRecepti(getContext(), receptList);
                                     recyclerView.setAdapter(adapterRecepti);

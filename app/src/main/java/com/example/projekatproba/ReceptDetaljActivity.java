@@ -18,6 +18,7 @@ public class ReceptDetaljActivity extends AppCompatActivity {
     TextView opisRecepta;
     TextView sastojci;
     TextView naziv;
+    TextView usernameKorsinika;
     ImageView receptSlika;
     ImageView home;
     @Override
@@ -30,6 +31,7 @@ public class ReceptDetaljActivity extends AppCompatActivity {
         sastojci= (TextView) findViewById(R.id.sastojciReceptaDetaljan);
         naziv= findViewById(R.id.nazivReceptaDetaljan);
         home=findViewById(R.id.home_dugme_recept_detalj);
+        usernameKorsinika=findViewById(R.id.usernameKorisnikaReceptaDetaljan);
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +46,7 @@ public class ReceptDetaljActivity extends AppCompatActivity {
             opisRecepta.setText(resultList.get(1));
             sastojci.setText(resultList.get(2));
             naziv.setText(resultList.get(3));
+            usernameKorsinika.setText(resultList.get(4));
             Log.d("TAG", "JANAAAAAAAAAAAAAA "+resultList.get(0));
             Picasso.get().load(String.valueOf(resultList.get(0))).into(receptSlika);
 

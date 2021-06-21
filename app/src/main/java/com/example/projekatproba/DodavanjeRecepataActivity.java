@@ -66,11 +66,14 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
     TimeUtility timeUtility;
     LocalDateTime now ;
     List<Sastojak> sastojakList;
+    String usernameKorisnika;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dodavanje_recepata);
 
+        ArrayList<String> dodavanjeLista=getIntent().getExtras().getStringArrayList("List");
+        usernameKorisnika=dodavanjeLista.get(0);
 
         now=LocalDateTime.now();
         timeUtility=new TimeUtility();
@@ -126,6 +129,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                 dataToSave.put("priprema",priprema.getText().toString());
                 dataToSave.put("sastojci",sastojci.getText().toString());
                 dataToSave.put("reviewers","");
+                dataToSave.put("usernameKorisnika",usernameKorisnika);
                 //napravimo i da moze bez prikaza liste sastojaka da nam se sastojci ucitavaju (samo oni na koje je kliknuto)
                 //document(Integer.toString(idDokumenta))
                 docRef.collection("recepti").add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

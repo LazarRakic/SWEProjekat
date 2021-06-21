@@ -11,8 +11,9 @@ public class Recept {
     private String idKorisnika;
     private String slika;
     private String prosecnaOCENA;
+    private String usernameKorisnika;
 
-    public Recept(String idRecepta, String naziv, String priprema, String sastojci, Long datum, String idKorisnika, String slika,String prosecnaOCENA) {
+    public Recept(String idRecepta, String naziv, String priprema, String sastojci, Long datum, String idKorisnika, String slika,String prosecnaOCENA,String usernameKorisnika) {
         this.idRecepta= idRecepta;
         this.naziv = naziv;
         this.priprema = priprema;
@@ -21,6 +22,15 @@ public class Recept {
         this.idKorisnika= idKorisnika;
         this.slika= slika;
         this.prosecnaOCENA=prosecnaOCENA;
+        this.usernameKorisnika=usernameKorisnika;
+    }
+
+    public String getUsernameKorisnika() {
+        return usernameKorisnika;
+    }
+
+    public void setUsernameKorisnika(String usernameKorisnika) {
+        this.usernameKorisnika = usernameKorisnika;
     }
 
     public String getIdRecepta() {return idRecepta;}

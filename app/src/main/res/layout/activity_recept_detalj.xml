@@ -92,5 +92,23 @@
         android:textSize="19sp"
         android:id="@+id/sastojciReceptaDetaljan"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:text="Username korisnika koji je objavio recept:"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:textSize="19sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingStart="20dp"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:id="@+id/usernameKorisnikaReceptaDetaljan"/>
+
 </LinearLayout>
 </ScrollView>
