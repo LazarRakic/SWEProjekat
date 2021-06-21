@@ -248,6 +248,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
                 }
                 break;
+            case R.id.nav_latest:
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentLatest()).commit();
+                }
+                break;
             case R.id.nav_notifications:
                 if(userA == true){
                     Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
