@@ -234,9 +234,9 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
     public void upload(Uri imageUri)
     {
 
-        int hours = new Time(System.currentTimeMillis()).getHours();
+        //int hours = new Time(System.currentTimeMillis()).getHours();
         //String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        StorageReference fileref=storage.child("SlikeRecepata/").child(hours+".jpg");
+        StorageReference fileref=storage.child("SlikeRecepti/").child(System.currentTimeMillis()+".jpg");
         StorageTask task=fileref.putFile(imageUri);
         task.continueWithTask(new Continuation() {
             @Override

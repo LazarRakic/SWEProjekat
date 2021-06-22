@@ -164,7 +164,13 @@ public class ProfileFragment extends Fragment {
         dodajRecept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), DodavanjeRecepataActivity.class));
+                ArrayList<String> lista;
+                lista=new ArrayList<>();
+
+                lista.add(username.getText().toString());
+                Intent intent=new Intent(getActivity(), DodavanjeRecepataActivity.class);
+                intent.putStringArrayListExtra("List", lista);
+                startActivity(intent);
             }
         });
         return view;//TODO
