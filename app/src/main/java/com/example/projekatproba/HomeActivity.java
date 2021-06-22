@@ -165,7 +165,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 EditText pretraga = new EditText (v.getContext());
                 AlertDialog.Builder pretragaDijalog = new AlertDialog.Builder(v.getContext());
                 pretragaDijalog.setTitle("Pretraga profila");
-                pretragaDijalog.setMessage("Unesite username za profil za koji želite da vršite pretragu");
+                pretragaDijalog.setMessage("Unesite korisničko ime za profil za koji želite da vršite pretragu");
                 pretragaDijalog.setView(pretraga);
 
                 pretragaDijalog.setPositiveButton("Pretraga", new DialogInterface.OnClickListener() {
@@ -262,13 +262,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentLatest()).commit();
                 }
                 break;
-            case R.id.nav_notifications:
-                if(userA == true){
-                    Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment()).commit();
-                }                break;
             case R.id.nav_settings_username:
                 if(userA == true){
                     Toast.makeText(getBaseContext(), "Morate se registrovati kako biste imali pristup! ", Toast.LENGTH_SHORT).show();

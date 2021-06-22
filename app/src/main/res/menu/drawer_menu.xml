@@ -17,10 +17,6 @@
             android:icon="@drawable/clock_fast_icon"
             android:title="Najnoviji recepti" />
         <item
-            android:id="@+id/nav_notifications"
-            android:icon="@drawable/notifications_icon"
-            android:title="Notifikacije" />
-        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/reply_icon"
             android:title="Podešavanja" >
