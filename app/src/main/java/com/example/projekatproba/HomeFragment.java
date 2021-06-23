@@ -1,5 +1,6 @@
 package com.example.projekatproba;
 
+import android.app.NotificationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,6 +32,11 @@ public class HomeFragment extends Fragment {
     List<Recept> receptList;
     AdapterReceptiProfiliKorisnika adapterReceptiProfiliKorisnika;
     List<Recept> novaSortiranaLista ;
+
+
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,15 +56,7 @@ public class HomeFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                   recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"),document.getString("usernameKorisnika"));
                                   receptList.add(recept);
-//
-//                                GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 1);
-//                                recyclerView.setLayoutManager(gridLayoutManager);
-//
-//                                recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"));
-//                                Log.d("TAG", "onComplete:"+recept.getNaziv());
-//                                receptList.add(recept);
-//                                adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(getContext(), receptList);
-//                                recyclerView.setAdapter(adapterReceptiProfiliKorisnika);
+
                             }
                             Recept receptiArray[] = new Recept[receptList.size()];
 
@@ -83,8 +82,9 @@ public class HomeFragment extends Fragment {
                             GridLayoutManager gridLayoutManager= new GridLayoutManager(getContext(), 1);
                             recyclerView.setLayoutManager(gridLayoutManager);
                             adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(getContext(), novaSortiranaLista);
-                            //adapterReceptiProfiliKorisnika= new AdapterReceptiProfiliKorisnika(getContext(), receptList);
+
                             recyclerView.setAdapter(adapterReceptiProfiliKorisnika);
+
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }

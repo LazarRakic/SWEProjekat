@@ -68,7 +68,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     List<String> slikeUrl;
     List<String> prezime;
     List<String> korime;
-    
+
+    List<NotificationsUtility> notificationsUtility;
+    List<Recept> receptListForNotifications;
+    Recept recept;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +115,38 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         userProfiles=findViewById(R.id.users);
         String user1=user.getUid();
         Log.d("TAG", user1+" AAAAAAAAAAAAAAAAAAAAAA");
+
+
+        notificationsUtility=new ArrayList<>();
+        receptListForNotifications=new ArrayList<>();
+        Context context = this;
+
+        CollectionReference receptReff= docRef.collection("recepti");
+        receptReff.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"),document.getString("usernameKorisnika"));
+                                receptListForNotifications.add(recept);
+
+                            }
+                            for(Recept recept:receptListForNotifications) {
+                                NotificationsUtility notificationsUtilityEl = new NotificationsUtility(recept.getIdRecepta());
+                                notificationsUtilityEl.listenFirestore(FirebaseAuth.getInstance().getCurrentUser().getUid(), context);
+                                notificationsUtility.add(notificationsUtilityEl);
+                            }
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+
+
+
         DocumentReference documentReference=docRef.collection("korisnici").document(user1);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -154,7 +191,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     Intent intent=new Intent(HomeActivity.this, DodavanjeRecepataActivity.class);
                     intent.putStringArrayListExtra("List", lista);
                     startActivity(intent);
-                   // startActivity(new Intent(getBaseContext(), DodavanjeRecepataActivity.class));
                 }
             });
         }

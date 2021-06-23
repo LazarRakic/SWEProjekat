@@ -142,7 +142,9 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
                                                 float konacna_ocena_dve_decimale = (float) (Math.round(konacna_ocena * 100.0) / 100.0);
                                                 receptProfiliHolder.ocena.setText(String.valueOf(konacna_ocena_dve_decimale));
                                                 String newReviewers =  document.getString("reviewers")+","+trenutniUser;
-                                                updateRecept(konacna_ocena_dve_decimale, br_merenja, receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta(),newReviewers);}
+                                                updateRecept(konacna_ocena_dve_decimale, br_merenja, receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta(),newReviewers);
+//                                                sendNotification(); //TODO SEND NOTIFICATION
+                                            }
                                             catch (NullPointerException e){
                                                 Log.d(TAG,e.getMessage());
                                             }
@@ -173,6 +175,11 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
 
 
     }
+
+//    //TODO SEND NOTIFICATION
+//    public void sendNotification(){
+//
+//    }
 
     @Override
     public int getItemCount() {
