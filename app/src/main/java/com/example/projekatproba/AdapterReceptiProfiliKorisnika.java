@@ -122,41 +122,64 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     String[] revieweri = document.getString("reviewers").split(",",-1);
+                              //      String[] revieweriUsername = document.getString("reviewersUsername").split(",",-1);
                                     String trenutniUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                    if(!document.getString("idPublishera").equals(trenutniUser))
-                                    {
-                                        int counter = 0;
-                                        for (int i = 0; i < revieweri.length; i++) {
-                                            if (trenutniUser.equals(revieweri[i])) {
-                                                break;
-                                            }
-                                            counter++;
-                                        }
-                                        if (counter == revieweri.length) {
 
-                                            try{
-                                                float br_merenja = Float.parseFloat(Objects.requireNonNull(document.getString("brojmerenja")));
-                                                float ocena_prosecna = Float.parseFloat(Objects.requireNonNull(document.getString("ocena")));
-                                                br_merenja++;
-                                                float konacna_ocena = (ocena_prosecna + rateValue) / br_merenja;
-                                                float konacna_ocena_dve_decimale = (float) (Math.round(konacna_ocena * 100.0) / 100.0);
-                                                receptProfiliHolder.ocena.setText(String.valueOf(konacna_ocena_dve_decimale));
-                                                String newReviewers =  document.getString("reviewers")+","+trenutniUser;
-                                                updateRecept(konacna_ocena_dve_decimale, br_merenja, receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta(),newReviewers);
+                                    DocumentReference documentRef=docRef.collection("korisnici").document(trenutniUser);
+                                    documentRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull  Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()){
+                                                DocumentSnapshot doc = task.getResult();
+                                                if(doc.exists()){
+                                                    String trenutniUsername= doc.getString("username");
+
+                                                    if(!document.getString("idPublishera").equals(trenutniUser))
+                                                    {
+                                                        int counter = 0;
+                                                        for (int i = 0; i < revieweri.length; i++) {
+                                                            if (trenutniUser.equals(revieweri[i])) {
+                                                                break;
+                                                            }
+                                                            counter++;
+                                                        }
+                                                        if (counter == revieweri.length) {
+
+                                                            try{
+                                                                float br_merenja = Float.parseFloat(Objects.requireNonNull(document.getString("brojmerenja")));
+                                                                float ocena_prosecna = Float.parseFloat(Objects.requireNonNull(document.getString("ocena")));
+                                                                br_merenja++;
+                                                                float konacna_ocena = (ocena_prosecna + rateValue) / br_merenja;
+                                                                float konacna_ocena_dve_decimale = (float) (Math.round(konacna_ocena * 100.0) / 100.0);
+                                                                receptProfiliHolder.ocena.setText(String.valueOf(konacna_ocena_dve_decimale));
+                                                                String newReviewers =  document.getString("reviewers")+","+trenutniUser;
+                                                                String newReviewersUsername =  document.getString("reviewersUsername")+","+trenutniUsername;
+                                                                updateRecept(konacna_ocena_dve_decimale, br_merenja, receptList.get(receptProfiliHolder.getAdapterPosition()).getIdRecepta(),newReviewers, newReviewersUsername);
 //                                                sendNotification(); //TODO SEND NOTIFICATION
-                                            }
-                                            catch (NullPointerException e){
-                                                Log.d(TAG,e.getMessage());
-                                            }
-                                        } else {
-                                            Toast.makeText(ctx, "Ne možete ostaviti recenziju više od jednog puta!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Toast.makeText(ctx, "Ne možete ostaviti recenziju za vaš recept!", Toast.LENGTH_SHORT).show();
-                                    }
+                                                            }
+                                                            catch (NullPointerException e){
+                                                                Log.d(TAG,e.getMessage());
+                                                            }
+                                                        } else {
+                                                            Toast.makeText(ctx, "Ne možete ostaviti recenziju više od jednog puta!", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        Toast.makeText(ctx, "Ne možete ostaviti recenziju za vaš recept!", Toast.LENGTH_SHORT).show();
+                                                    }
 
+                                                }
+                                                else {
+                                                    Log.d("TAG:", "No such document");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Log.d("TAG", "get failed with ", task.getException());
+                                            }
+                                        }
+                                    });
                                 }
                                 else {
                                     Log.d("TAG:", "No such document");
@@ -187,12 +210,12 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
     }
 
 
-    public void updateRecept(float konacna_ocena,float br_merenja,String document,String newReviewers)
+    public void updateRecept(float konacna_ocena,float br_merenja,String document,String newReviewers, String newReviewersUsername)
     {
         DocumentReference receptiUpdate = docRef.collection("recepti").document(document);
 
         receptiUpdate
-                .update("ocena", String.valueOf(konacna_ocena),"brojmerenja",String.valueOf(br_merenja),"reviewers",newReviewers)
+                .update("ocena", String.valueOf(konacna_ocena),"brojmerenja",String.valueOf(br_merenja),"reviewers",newReviewers,"reviewersUsername",newReviewersUsername)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

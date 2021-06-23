@@ -56,7 +56,6 @@ public class HomeFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                   recept =new Recept(document.getId(), document.getString("naziv"),document.getString("priprema"),document.getString("sastojci"),Long.parseLong( document.get("datum").toString()),document.getString("idPublishera"),document.getString("Img"),document.getString("ocena"),document.getString("usernameKorisnika"));
                                   receptList.add(recept);
-
                             }
                             Recept receptiArray[] = new Recept[receptList.size()];
 

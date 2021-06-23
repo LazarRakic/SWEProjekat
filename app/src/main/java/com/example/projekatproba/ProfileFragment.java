@@ -211,8 +211,6 @@ public class ProfileFragment extends Fragment {
                 Uri downloaduri=task.getResult();
                 imageUrl=downloaduri.toString();
 
-
-
                 DocumentReference documentReference= docRef.collection("korisnici").document(baseAuth.getInstance().getCurrentUser().getUid());
 
                 documentReference.update(

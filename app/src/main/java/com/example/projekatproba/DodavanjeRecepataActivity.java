@@ -136,7 +136,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("TAG", "Recept  je sačuvan! ");
-                        Toast.makeText(DodavanjeRecepataActivity.this, "Recept je uspesno dodat ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(DodavanjeRecepataActivity.this, "Recept je uspešno dodat.", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         //intent da predje na home activiti
                         //i dodaj toast
@@ -146,7 +146,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(DodavanjeRecepataActivity.this, "Recept nije dodat pokusajte ponovo! ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(DodavanjeRecepataActivity.this, "Recept nije dodat! Pokušajte ponovo! ", Toast.LENGTH_LONG).show();
                         Log.w("TAG", "Recept nije sačuvan u bazi! ", e);
                     }
                 });
