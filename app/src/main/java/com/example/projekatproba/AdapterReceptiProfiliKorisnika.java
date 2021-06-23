@@ -149,12 +149,12 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
                                                 Log.d(TAG,e.getMessage());
                                             }
                                         } else {
-                                            Toast.makeText(ctx, "Ne mozete ostaviti recenziju vise od jednog puta!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(ctx, "Ne možete ostaviti recenziju više od jednog puta!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                     else
                                     {
-                                        Toast.makeText(ctx, "Ne mozete ostaviti recenziju za vas recept!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ctx, "Ne možete ostaviti recenziju za vaš recept!", Toast.LENGTH_SHORT).show();
                                     }
 
                                 }
