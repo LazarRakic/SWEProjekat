@@ -53,7 +53,7 @@ public class FragmentLatest extends Fragment {
                                 receptList.add(recept);
 
                             }
-                            Recept receptiArray[] = new Recept[receptList.size()];
+                            Recept[] receptiArray = new Recept[receptList.size()];
 
                             for(int i=0;i<receptList.size();i++)
                             {
