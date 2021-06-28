@@ -43,7 +43,6 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_username);
 
         discard= findViewById(R.id.buttonDiscard);
-        newPassword=findViewById(R.id.editTextNewPassword);
   		save= findViewById(R.id.buttonSave);
   		newUsername= findViewById(R.id.editTextNewUsername);
         baseAuth= FirebaseAuth.getInstance();

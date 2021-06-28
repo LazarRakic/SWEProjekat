@@ -85,15 +85,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if(task.isSuccessful()){
 
-                                                                DeleteUser();
-
-
                                                             }
                                                         }
                                                     });
-
-
-
                                                 }
 
                                             }
@@ -104,6 +98,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        DeleteUser(user);
 
 
                     }
@@ -131,14 +126,14 @@ public class DeleteAccountActivity extends AppCompatActivity {
         });
     }
 
-    public void DeleteUser(){
-        user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+    public void DeleteUser(FirebaseUser firebaseUser){
+        firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
 
 
-                    docRef.collection("korisnici").document(user.getUid().toString())
+                    docRef.collection("korisnici").document(firebaseUser.getUid().toString())
                             .delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -160,7 +155,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                 }
                 else {
                          
-                         Toast.makeText(getApplicationContext(), "Greška prilikom brisanja naloga." + user.getUid(), Toast.LENGTH_LONG).show();
+                         Toast.makeText(getApplicationContext(), "Greška prilikom brisanja naloga." + firebaseUser.getUid(), Toast.LENGTH_LONG).show();
                            Log.w("TAG", "NIJE OBRISAN I IZ AUTENTIKACIJEEEEEEE EE EEE");
                 }
             }
