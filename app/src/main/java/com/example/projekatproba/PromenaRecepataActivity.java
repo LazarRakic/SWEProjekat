@@ -175,31 +175,56 @@ public class PromenaRecepataActivity extends AppCompatActivity {
         {
             ss+=s1+",";
         }
-        DocumentReference documentReference= docRef.collection("recepti").document(idRecepta);
-        documentReference.update(
+        Log.d("TAG", "IMG URL RECEPTA  "+imageUrl);
+        DocumentReference documentReference = docRef.collection("recepti").document(idRecepta);
+        if(imageUrl != null) {
+            documentReference.update(
 
-                "Img", imageUrl,
-                "naziv", nazivRecepta.getText().toString(),
-                "priprema", pripremaRecepta.getText().toString(),
-                "sastojci", ss
-        ).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "Podaci uspešno ažurirani.", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    "Img", imageUrl,
+                    "naziv", nazivRecepta.getText().toString(),
+                    "priprema", pripremaRecepta.getText().toString(),
+                    "sastojci", ss
+            ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Podaci uspešno ažurirani.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Greška prilikom ažuriranja podataka.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    Toast.makeText(getApplicationContext(), "Greška prilikom ažuriranja podataka.", Toast.LENGTH_SHORT).show();
+
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
                 }
-            }
+            });
+        }
+        else{
+            documentReference.update(
+                    "naziv", nazivRecepta.getText().toString(),
+                    "priprema", pripremaRecepta.getText().toString(),
+                    "sastojci", ss
+            ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Podaci uspešno ažurirani.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Greška prilikom ažuriranja podataka.", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull  Exception e) {
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -199,7 +199,7 @@ public class RegistryActivity extends AppCompatActivity {
                                                 dataToSave.put("surname", surnameVal);
                                                 dataToSave.put("date", dateVal);
                                                 dataToSave.put("username", usernameVal);
-                                                dataToSave.put("password", passwordVal);
+//                                                dataToSave.put("password", passwordVal);
                                                 dataToSave.put("email", emailVal);
                                                 dataToSave.put("profileImageUrl" , "default");
 
