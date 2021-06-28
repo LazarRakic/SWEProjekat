@@ -153,11 +153,13 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                 }
                             });
 
+                          
                           Toast.makeText(getApplicationContext(), "Nalog je obrisan", Toast.LENGTH_LONG).show();
                           Log.w("TAG", "OBRISAN I IZ AUTENTIKACIJEEEEEEE EE EEE");
                           startActivity(new Intent(getApplicationContext(), LogInActivity.class));
                 }
                 else {
+                         
                          Toast.makeText(getApplicationContext(), "Greška prilikom brisanja naloga." + user.getUid(), Toast.LENGTH_LONG).show();
                            Log.w("TAG", "NIJE OBRISAN I IZ AUTENTIKACIJEEEEEEE EE EEE");
                 }

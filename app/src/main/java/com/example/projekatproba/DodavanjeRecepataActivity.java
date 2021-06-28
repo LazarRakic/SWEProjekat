@@ -106,6 +106,7 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                 dataToSave.put("priprema",priprema.getText().toString());
                 dataToSave.put("sastojci",sastojci.getText().toString());
                 dataToSave.put("reviewers","");
+                dataToSave.put("reviewersUsername","");
                 dataToSave.put("usernameKorisnika",usernameKorisnika);
                 //napravimo i da moze bez prikaza liste sastojaka da nam se sastojci ucitavaju (samo oni na koje je kliknuto)
                 //document(Integer.toString(idDokumenta))
