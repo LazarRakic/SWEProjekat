@@ -40,7 +40,6 @@ public class AdapterRecepti extends RecyclerView.Adapter<ReceptHolder> {
     List<Recept> receptList;
     FirebaseAuth baseAuth;
     private FirebaseFirestore docRef= FirebaseFirestore.getInstance();
-    DocumentReference documentRef;
 
     public AdapterRecepti(Context ctx, List<Recept> receptList) {
         this.ctx = ctx;

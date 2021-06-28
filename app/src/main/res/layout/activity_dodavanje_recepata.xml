@@ -103,20 +103,22 @@
         android:id="@+id/prikaziSastojke"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="20dp"
         android:text="Prikazi sastojke"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/objaviRecept"
         app:layout_constraintTop_toBottomOf="@+id/listaSastojaka" />
 
     <Button
         android:id="@+id/objaviRecept"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
         android:text="Objavi recept"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/prikaziSastojke"
         app:layout_constraintTop_toBottomOf="@+id/listaSastojaka" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

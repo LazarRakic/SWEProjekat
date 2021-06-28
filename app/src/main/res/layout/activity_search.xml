@@ -34,7 +34,7 @@
             android:id="@+id/pretraziPoSastojcima"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="320dp"
+            android:layout_marginLeft="270dp"
             android:text="Pretrazi"
             android:textSize="18sp" />
 

@@ -92,7 +92,8 @@
                     android:layout_height="wrap_content"
                     android:numStars="5"
                     android:stepSize="0.5"
-                    android:layout_marginRight="47dp"/>
+                    android:paddingRight="4dp"
+                    android:layout_marginRight="45dp"/>
                 <Button
                     android:id="@+id/button_recenzija"
                     android:layout_width="100dp"

@@ -53,7 +53,6 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
     DocumentReference documentRef;
 
     float rateValue;
-    String temp;
 
     public AdapterReceptiProfiliKorisnika(Context ctx, List<Recept> receptList) {
         this.ctx = ctx;
@@ -122,7 +121,6 @@ public class AdapterReceptiProfiliKorisnika extends RecyclerView.Adapter<ReceptP
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     String[] revieweri = document.getString("reviewers").split(",",-1);
-                              //      String[] revieweriUsername = document.getString("reviewersUsername").split(",",-1);
                                     String trenutniUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                                     DocumentReference documentRef=docRef.collection("korisnici").document(trenutniUser);

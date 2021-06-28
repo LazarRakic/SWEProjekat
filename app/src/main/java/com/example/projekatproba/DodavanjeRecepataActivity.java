@@ -93,29 +93,6 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
         this.selektovaniSastojci=new ArrayList<String>();
         sastojakList = new ArrayList<Sastojak>();
 
-       /** docRef.collection("recepti")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-
-                                    idDokumenta++;
-
-                            }
-
-
-
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-
-                    }
-
-
-                });*/
-
         objavi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,8 +117,6 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         //intent da predje na home activiti
                         //i dodaj toast
-
-
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -233,9 +208,6 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
 
     public void upload(Uri imageUri)
     {
-
-        //int hours = new Time(System.currentTimeMillis()).getHours();
-        //String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
         StorageReference fileref=storage.child("SlikeRecepti/").child(System.currentTimeMillis()+".jpg");
         StorageTask task=fileref.putFile(imageUri);
         task.continueWithTask(new Continuation() {
@@ -250,33 +222,6 @@ public class DodavanjeRecepataActivity extends AppCompatActivity {
             public void onComplete(@NonNull  Task<Uri> task) {
                 Uri downloaduri = task.getResult();
                 imageUrl = downloaduri.toString();
-
-
-                /*/dodavanje novog sastojka klikom na dugme
-
-                Map<String, Object> dataToSave = new HashMap<String, Object>();
-                dataToSave.put("Img", imageUrl);
-                //dataToSave.put("datum", surnameVal);
-                dataToSave.put("idPublishera", uid);
-                //dataToSave.put("naziv", priprema.getText());
-                //dataToSave.put("sastojci",sastojci.getText());
-                docRef.collection("recepti").document(Integer.toString(idDokumenta)).set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("TAG", "Recept  je sačuvan! ");
-                        idDokumenta++;
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        Log.w("TAG", "Recept nije sacuvan u bazi! ", e);
-                    }
-                });*/
-
-
-
 
             }
 

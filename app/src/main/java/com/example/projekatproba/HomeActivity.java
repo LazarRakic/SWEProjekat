@@ -134,7 +134,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             }
                             for(Recept recept:receptListForNotifications) {
                                 NotificationsUtility notificationsUtilityEl = new NotificationsUtility(recept.getIdRecepta());
-                                notificationsUtilityEl.listenFirestore(FirebaseAuth.getInstance().getCurrentUser().getUid(), context);
+                                notificationsUtilityEl.listenFirestore(FirebaseAuth.getInstance().getCurrentUser().getUid(), context, recept.getUsernameKorisnika());
                                 notificationsUtility.add(notificationsUtilityEl);
                             }
                         } else {

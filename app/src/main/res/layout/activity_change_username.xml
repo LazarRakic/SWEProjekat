@@ -10,12 +10,13 @@
         android:id="@+id/newUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:text="Unesite novo korisničko ime:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/editTextNewUsername"
         android:paddingTop="60dp"/>
 
     <EditText
@@ -45,26 +46,33 @@
 
     <Button
         android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="sačuvaj"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonDiscard"
         app:layout_constraintHorizontal_bias="0.913"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNewUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextNewUsername"
+        app:layout_constraintVertical_bias="0.183" />
 
     <Button
         android:id="@+id/buttonDiscard"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="88dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="odbaci"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNewUsername" />
+        app:layout_constraintStart_toEndOf="@id/buttonSave"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNewUsername"
+        app:layout_constraintVertical_bias="0.183" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
